@@ -1,0 +1,7 @@
+aid: aflac
+url: https://raw.githubusercontent.com/api-evangelist/aflac/refs/heads/main/apis.yml
+modified: '2026-03-21'
+apis: []
+common:
+  - type: Website
+    url: https://www.aflac.com
