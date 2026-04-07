@@ -1,7 +1,11 @@
 aid: aflac
-url: https://raw.githubusercontent.com/api-evangelist/aflac/refs/heads/main/apis.yml
+url: 
+  https://raw.githubusercontent.com/api-evangelist/aflac/refs/heads/main/apis.yml
 modified: '2026-03-21'
 apis: []
 common:
   - type: Website
     url: https://www.aflac.com
+description: >-
+  Aflac provides supplemental insurance to help pay out-of-pocket expenses your major
+  medical insurance doesn't cover. Get started with a quote today!
