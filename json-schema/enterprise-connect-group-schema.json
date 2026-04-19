@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/aflac/refs/heads/main/json-schema/enterprise-connect-group-schema.json",
+  "title": "Group",
+  "description": "An employer group record.",
+  "type": "object",
+  "properties": {
+    "group_id": {
+      "type": "string",
+      "description": "Unique employer group identifier.",
+      "example": "GRP-123456"
+    },
+    "name": {
+      "type": "string",
+      "description": "Employer group name.",
+      "example": "Example Corp Benefits Group"
+    },
+    "employer_name": {
+      "type": "string",
+      "description": "Legal employer name.",
+      "example": "Example Corporation"
+    },
+    "status": {
+      "type": "string",
+      "description": "Group status.",
+      "enum": [
+        "active",
+        "inactive"
+      ],
+      "example": "active"
+    },
+    "employee_count": {
+      "type": "integer",
+      "description": "Number of enrolled employees.",
+      "example": 250
+    },
+    "effective_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Group effective date.",
+      "example": "2025-01-01"
+    }
+  }
+}

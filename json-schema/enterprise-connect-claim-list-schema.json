@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/aflac/refs/heads/main/json-schema/enterprise-connect-claim-list-schema.json",
+  "title": "ClaimList",
+  "description": "Paginated list of claims.",
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "description": "Array of claim records.",
+      "items": {
+        "$ref": "#/components/schemas/Claim"
+      },
+      "example": [
+        "example_value"
+      ]
+    },
+    "total": {
+      "type": "integer",
+      "description": "Total number of matching claims.",
+      "example": 30
+    }
+  }
+}

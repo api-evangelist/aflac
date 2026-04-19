@@ -1,0 +1,14 @@
+{
+  "enrollment_id": "500123",
+  "employee_id": "500123",
+  "group_id": "500123",
+  "policy_id": "500123",
+  "product_type": "accident",
+  "coverage_level": "employee_only",
+  "status": "active",
+  "effective_date": "2025-03-15",
+  "termination_date": "2025-03-15",
+  "monthly_premium": 99.99,
+  "created_at": "2025-03-15T14:30:00Z",
+  "updated_at": "2025-03-15T14:30:00Z"
+}

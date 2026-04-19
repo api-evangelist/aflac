@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/aflac/refs/heads/main/json-schema/enterprise-connect-policy-schema.json",
+  "title": "Policy",
+  "description": "A supplemental insurance policy record.",
+  "type": "object",
+  "properties": {
+    "policy_id": {
+      "type": "string",
+      "description": "Unique policy identifier.",
+      "example": "POL-987654"
+    },
+    "enrollment_id": {
+      "type": "string",
+      "description": "Associated enrollment identifier.",
+      "example": "ENR-500123"
+    },
+    "employee_id": {
+      "type": "string",
+      "description": "Policyholder employee identifier.",
+      "example": "EMP-789012"
+    },
+    "group_id": {
+      "type": "string",
+      "description": "Employer group identifier.",
+      "example": "GRP-123456"
+    },
+    "product_type": {
+      "type": "string",
+      "description": "Type of supplemental insurance product.",
+      "example": "accident"
+    },
+    "status": {
+      "type": "string",
+      "description": "Policy status.",
+      "enum": [
+        "active",
+        "lapsed",
+        "terminated"
+      ],
+      "example": "active"
+    },
+    "face_value": {
+      "type": "number",
+      "description": "Coverage face value amount in USD.",
+      "example": 50000
+    },
+    "monthly_premium": {
+      "type": "number",
+      "description": "Monthly premium amount in USD.",
+      "example": 18.5
+    },
+    "effective_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Policy effective date.",
+      "example": "2025-01-01"
+    }
+  }
+}

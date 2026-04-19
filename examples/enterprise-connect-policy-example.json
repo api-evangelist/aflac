@@ -1,0 +1,11 @@
+{
+  "policy_id": "500123",
+  "enrollment_id": "500123",
+  "employee_id": "500123",
+  "group_id": "500123",
+  "product_type": "example_value",
+  "status": "active",
+  "face_value": 99.99,
+  "monthly_premium": 99.99,
+  "effective_date": "2025-03-15"
+}

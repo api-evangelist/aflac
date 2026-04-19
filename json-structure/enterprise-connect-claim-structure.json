@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/aflac/refs/heads/main/json-structure/enterprise-connect-claim-structure.json",
+  "name": "Claim",
+  "description": "A supplemental insurance claim record.",
+  "type": "object",
+  "properties": {
+    "claim_id": {
+      "type": "string",
+      "description": "Unique claim identifier.",
+      "example": "CLM-112233"
+    },
+    "policy_id": {
+      "type": "string",
+      "description": "Policy associated with the claim.",
+      "example": "POL-987654"
+    },
+    "employee_id": {
+      "type": "string",
+      "description": "Claimant employee identifier.",
+      "example": "EMP-789012"
+    },
+    "claim_type": {
+      "type": "string",
+      "description": "Type of claim event.",
+      "enum": [
+        "accident",
+        "critical_illness",
+        "cancer_diagnosis",
+        "hospitalization",
+        "disability"
+      ],
+      "example": "accident"
+    },
+    "status": {
+      "type": "string",
+      "description": "Current claim processing status.",
+      "enum": [
+        "submitted",
+        "in_review",
+        "approved",
+        "denied",
+        "paid"
+      ],
+      "example": "approved"
+    },
+    "incident_date": {
+      "type": "date",
+      "description": "Date of the qualifying event.",
+      "example": "2025-02-10"
+    },
+    "submission_date": {
+      "type": "datetime",
+      "description": "Timestamp when the claim was submitted.",
+      "example": "2025-02-15T09:30:00Z"
+    },
+    "benefit_amount": {
+      "type": "double",
+      "description": "Approved benefit payment amount in USD.",
+      "example": 1500.0
+    },
+    "denial_reason": {
+      "type": "string",
+      "description": "Reason for denial if the claim was denied.",
+      "example": "Condition not covered under policy terms."
+    }
+  }
+}

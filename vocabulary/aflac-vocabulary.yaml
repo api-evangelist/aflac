@@ -1,0 +1,282 @@
+vocabulary: "1.0.0"
+
+info:
+  provider: "Aflac"
+  description: "Unified taxonomy of the Aflac Enterprise Connect API platform covering benefits enrollment, claims, eligibility, and policy management."
+  created: "2026-04-19"
+  modified: "2026-04-19"
+
+operational:
+  apis:
+    - namespace: aflac-enterprise-connect
+      name: Aflac Enterprise Connect API
+      version: "1.0"
+      baseUrl: https://api.enterprise-connect.aflac.com/v1
+      status: active
+
+  resources:
+    - name: enrollments
+      description: "Supplemental insurance benefit enrollments for employees."
+      apis:
+        - aflac-enterprise-connect
+      actions:
+        - list
+        - create
+        - get
+        - update
+        - terminate
+    - name: policies
+      description: "Supplemental insurance policies issued to enrolled employees."
+      apis:
+        - aflac-enterprise-connect
+      actions:
+        - list
+        - get
+    - name: claims
+      description: "Supplemental insurance claims submitted by policyholders."
+      apis:
+        - aflac-enterprise-connect
+      actions:
+        - list
+        - submit
+        - get
+    - name: eligibility
+      description: "Employee eligibility for supplemental insurance products."
+      apis:
+        - aflac-enterprise-connect
+      actions:
+        - verify
+    - name: groups
+      description: "Employer groups associated with Aflac supplemental insurance plans."
+      apis:
+        - aflac-enterprise-connect
+      actions:
+        - list
+        - get
+
+  actions:
+    - name: list
+      description: "Retrieve a paginated list of resources."
+      httpMethod: GET
+      pattern: read
+    - name: get
+      description: "Retrieve a single resource by identifier."
+      httpMethod: GET
+      pattern: read
+    - name: create
+      description: "Create a new resource record."
+      httpMethod: POST
+      pattern: write
+    - name: submit
+      description: "Submit a claim or enrollment request for processing."
+      httpMethod: POST
+      pattern: write
+    - name: update
+      description: "Update an existing resource."
+      httpMethod: PUT
+      pattern: write
+    - name: terminate
+      description: "Terminate an active enrollment."
+      httpMethod: DELETE
+      pattern: destructive
+    - name: verify
+      description: "Verify eligibility in real time."
+      httpMethod: POST
+      pattern: read
+
+  schemas:
+    core:
+      - name: Enrollment
+        description: "Benefit enrollment record for a supplemental insurance product."
+        api: aflac-enterprise-connect
+      - name: EnrollmentRequest
+        description: "Request payload for creating or updating an enrollment."
+        api: aflac-enterprise-connect
+      - name: Policy
+        description: "Supplemental insurance policy record."
+        api: aflac-enterprise-connect
+    claims:
+      - name: Claim
+        description: "A supplemental insurance claim record with status and benefit amount."
+        api: aflac-enterprise-connect
+      - name: ClaimRequest
+        description: "Request payload for submitting a new claim."
+        api: aflac-enterprise-connect
+    eligibility:
+      - name: EligibilityRequest
+        description: "Request payload for verifying employee eligibility."
+        api: aflac-enterprise-connect
+      - name: EligibilityResponse
+        description: "Result of an eligibility verification check."
+        api: aflac-enterprise-connect
+
+  parameters:
+    pagination:
+      - name: limit
+        description: "Maximum number of results to return."
+        type: integer
+      - name: offset
+        description: "Number of results to skip."
+        type: integer
+    identifiers:
+      - name: enrollment_id
+        description: "Unique enrollment identifier."
+        type: string
+      - name: policy_id
+        description: "Unique policy identifier."
+        type: string
+      - name: claim_id
+        description: "Unique claim identifier."
+        type: string
+      - name: group_id
+        description: "Employer group identifier."
+        type: string
+      - name: employee_id
+        description: "Employee identifier."
+        type: string
+    filters:
+      - name: status
+        description: "Filter by resource status."
+        type: string
+      - name: product_type
+        description: "Filter by supplemental insurance product type."
+        type: string
+
+  enums:
+    enrollment-statuses:
+      - active
+      - pending
+      - terminated
+    product-types:
+      - accident
+      - critical_illness
+      - cancer
+      - hospital_indemnity
+      - disability
+      - life
+    coverage-levels:
+      - employee_only
+      - employee_spouse
+      - employee_children
+      - family
+    claim-statuses:
+      - submitted
+      - in_review
+      - approved
+      - denied
+      - paid
+    claim-types:
+      - accident
+      - critical_illness
+      - cancer_diagnosis
+      - hospitalization
+      - disability
+
+  authentication:
+    schemes:
+      - type: oauth2
+        description: "OAuth 2.0 client credentials flow for server-to-server API access."
+        apis:
+          - aflac-enterprise-connect
+        scopes:
+          - enrollment:read
+          - enrollment:write
+          - claims:read
+          - claims:write
+          - eligibility:read
+          - groups:read
+
+capability:
+  workflows:
+    - name: Benefits Administration
+      file: capabilities/benefits-administration.yaml
+      description: "Full supplemental insurance benefits lifecycle from enrollment through claims and eligibility verification."
+      apisComposed:
+        - aflac-enterprise-connect
+      toolCount: 6
+      personas:
+        - hr-platform-engineer
+        - benefits-administrator
+
+  personas:
+    - id: hr-platform-engineer
+      name: HR Platform Engineer
+      description: "Backend developer integrating Aflac supplemental insurance enrollment into an HR or benefits administration platform."
+      workflows:
+        - Benefits Administration
+    - id: benefits-administrator
+      name: Benefits Administrator
+      description: "HR or benefits team member managing employee enrollment, claims, and eligibility for supplemental insurance."
+      workflows:
+        - Benefits Administration
+
+  domains:
+    - name: Enrollment
+      description: "Employee enrollment in supplemental insurance products."
+      resources:
+        - enrollments
+    - name: Claims
+      description: "Claim submission and tracking for qualifying health events."
+      resources:
+        - claims
+    - name: Eligibility
+      description: "Real-time eligibility verification for supplemental insurance products."
+      resources:
+        - eligibility
+    - name: Policy Management
+      description: "Active supplemental insurance policy tracking."
+      resources:
+        - policies
+        - groups
+
+  namespaces:
+    consumed:
+      - aflac-enterprise-connect
+    rest:
+      - name: aflac-benefits-api
+        port: 8080
+    mcp:
+      - name: aflac-benefits-mcp
+        port: 9090
+
+  binds:
+    - name: AFLAC_CLIENT_ID
+      description: "OAuth2 client ID for Aflac Enterprise Connect API."
+      usedIn:
+        - Benefits Administration
+    - name: AFLAC_CLIENT_SECRET
+      description: "OAuth2 client secret for Aflac Enterprise Connect API."
+      usedIn:
+        - Benefits Administration
+    - name: AFLAC_ACCESS_TOKEN
+      description: "OAuth2 access token for API requests."
+      usedIn:
+        - Benefits Administration
+
+crossReference:
+  - resource: enrollments
+    operations:
+      - list-enrollments
+      - create-enrollment
+      - get-enrollment
+    workflows:
+      - Benefits Administration
+    personas:
+      - hr-platform-engineer
+      - benefits-administrator
+  - resource: claims
+    operations:
+      - list-claims
+      - submit-claim
+    workflows:
+      - Benefits Administration
+    personas:
+      - benefits-administrator
+  - resource: eligibility
+    operations:
+      - verify-eligibility
+    workflows:
+      - Benefits Administration
+    personas:
+      - hr-platform-engineer
+      - benefits-administrator

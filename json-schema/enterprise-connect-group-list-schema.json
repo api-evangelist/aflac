@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/aflac/refs/heads/main/json-schema/enterprise-connect-group-list-schema.json",
+  "title": "GroupList",
+  "description": "Paginated list of employer groups.",
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "description": "Array of group records.",
+      "items": {
+        "$ref": "#/components/schemas/Group"
+      },
+      "example": [
+        "example_value"
+      ]
+    },
+    "total": {
+      "type": "integer",
+      "description": "Total number of groups.",
+      "example": 10
+    }
+  }
+}

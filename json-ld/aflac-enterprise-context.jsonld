@@ -1,0 +1,148 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "aflac": "https://aflac.com/schema/",
+    "schema": "https://schema.org/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "GroupList": "aflac:GroupList",
+    "items": {
+      "@id": "aflac:items",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "total": {
+      "@id": "aflac:total",
+      "@type": "xsd:integer"
+    },
+    "PolicyList": "aflac:PolicyList",
+    "EnrollmentList": "aflac:EnrollmentList",
+    "limit": {
+      "@id": "aflac:limit",
+      "@type": "xsd:integer"
+    },
+    "offset": {
+      "@id": "aflac:offset",
+      "@type": "xsd:integer"
+    },
+    "Group": "aflac:Group",
+    "groupId": {
+      "@id": "aflac:group_id",
+      "@type": "xsd:string"
+    },
+    "name": "schema:name",
+    "employerName": {
+      "@id": "aflac:employer_name",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "aflac:status",
+      "@type": "xsd:string"
+    },
+    "employeeCount": {
+      "@id": "aflac:employee_count",
+      "@type": "xsd:integer"
+    },
+    "effectiveDate": {
+      "@id": "aflac:effective_date",
+      "@type": "xsd:date"
+    },
+    "EligibilityResponse": "aflac:EligibilityResponse",
+    "eligible": {
+      "@id": "aflac:eligible",
+      "@type": "xsd:boolean"
+    },
+    "employeeId": {
+      "@id": "aflac:employee_id",
+      "@type": "xsd:string"
+    },
+    "productType": {
+      "@id": "aflac:product_type",
+      "@type": "xsd:string"
+    },
+    "ineligibilityReason": {
+      "@id": "aflac:ineligibility_reason",
+      "@type": "xsd:string"
+    },
+    "Claim": "aflac:Claim",
+    "claimId": {
+      "@id": "aflac:claim_id",
+      "@type": "xsd:string"
+    },
+    "policyId": {
+      "@id": "aflac:policy_id",
+      "@type": "xsd:string"
+    },
+    "claimType": {
+      "@id": "aflac:claim_type",
+      "@type": "xsd:string"
+    },
+    "incidentDate": {
+      "@id": "aflac:incident_date",
+      "@type": "xsd:date"
+    },
+    "submissionDate": {
+      "@id": "aflac:submission_date",
+      "@type": "xsd:dateTime"
+    },
+    "benefitAmount": {
+      "@id": "aflac:benefit_amount",
+      "@type": "xsd:decimal"
+    },
+    "denialReason": {
+      "@id": "aflac:denial_reason",
+      "@type": "xsd:string"
+    },
+    "EnrollmentRequest": "aflac:EnrollmentRequest",
+    "coverageLevel": {
+      "@id": "aflac:coverage_level",
+      "@type": "xsd:string"
+    },
+    "dependents": {
+      "@id": "aflac:dependents",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "EligibilityRequest": "aflac:EligibilityRequest",
+    "ClaimRequest": "aflac:ClaimRequest",
+    "description": "schema:description",
+    "Enrollment": "aflac:Enrollment",
+    "enrollmentId": {
+      "@id": "aflac:enrollment_id",
+      "@type": "xsd:string"
+    },
+    "terminationDate": {
+      "@id": "aflac:termination_date",
+      "@type": "xsd:date"
+    },
+    "monthlyPremium": {
+      "@id": "aflac:monthly_premium",
+      "@type": "xsd:decimal"
+    },
+    "createdAt": "schema:dateCreated",
+    "updatedAt": "schema:dateModified",
+    "Dependent": "aflac:Dependent",
+    "firstName": {
+      "@id": "aflac:first_name",
+      "@type": "xsd:string"
+    },
+    "lastName": {
+      "@id": "aflac:last_name",
+      "@type": "xsd:string"
+    },
+    "dateOfBirth": {
+      "@id": "aflac:date_of_birth",
+      "@type": "xsd:date"
+    },
+    "relationship": {
+      "@id": "aflac:relationship",
+      "@type": "xsd:string"
+    },
+    "Policy": "aflac:Policy",
+    "faceValue": {
+      "@id": "aflac:face_value",
+      "@type": "xsd:decimal"
+    },
+    "ClaimList": "aflac:ClaimList"
+  }
+}

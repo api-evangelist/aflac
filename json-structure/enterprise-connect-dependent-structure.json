@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/aflac/refs/heads/main/json-structure/enterprise-connect-dependent-structure.json",
+  "name": "Dependent",
+  "description": "A dependent to be covered under a family enrollment.",
+  "type": "object",
+  "properties": {
+    "first_name": {
+      "type": "string",
+      "description": "Dependent's first name.",
+      "example": "Jane"
+    },
+    "last_name": {
+      "type": "string",
+      "description": "Dependent's last name.",
+      "example": "Smith"
+    },
+    "date_of_birth": {
+      "type": "date",
+      "description": "Dependent's date of birth.",
+      "example": "1990-06-15"
+    },
+    "relationship": {
+      "type": "string",
+      "description": "Relationship to the employee.",
+      "enum": [
+        "spouse",
+        "child"
+      ],
+      "example": "spouse"
+    }
+  }
+}

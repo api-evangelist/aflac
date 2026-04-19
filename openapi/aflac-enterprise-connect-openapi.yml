@@ -1,0 +1,1308 @@
+openapi: 3.0.3
+info:
+  title: Aflac Enterprise Connect API
+  description: >-
+    The Aflac Enterprise Connect (AEC) API enables benefits administrators, HR platforms,
+    and third-party enrollment systems to integrate with Aflac's supplemental insurance
+    platform. It provides REST API access to benefits enrollment, policy management,
+    claims status, and eligibility verification for group and individual supplemental
+    insurance products.
+  version: '1.0'
+  contact:
+    name: Aflac Enterprise Connect Support
+    url: https://docs.enterprise-connect.aflac.com
+  x-generated-from: documentation
+servers:
+- url: https://api.enterprise-connect.aflac.com/v1
+  description: Production Server
+- url: https://sandbox.enterprise-connect.aflac.com/v1
+  description: Sandbox Server
+tags:
+- name: Enrollment
+  description: Benefits enrollment operations for supplemental insurance products.
+- name: Policies
+  description: Policy management and retrieval operations.
+- name: Claims
+  description: Claims submission and status retrieval operations.
+- name: Eligibility
+  description: Employee eligibility verification operations.
+- name: Groups
+  description: Employer group management operations.
+security:
+- oauth2: []
+paths:
+  /enrollments:
+    get:
+      operationId: listEnrollments
+      summary: Aflac List Enrollments
+      description: Retrieve a list of benefit enrollments for a group or employee.
+      tags:
+      - Enrollment
+      parameters:
+      - name: group_id
+        in: query
+        description: Filter enrollments by employer group ID.
+        schema:
+          type: string
+        example: GRP-123456
+      - name: employee_id
+        in: query
+        description: Filter enrollments by employee ID.
+        schema:
+          type: string
+        example: EMP-789012
+      - name: status
+        in: query
+        description: Filter by enrollment status (active, pending, terminated).
+        schema:
+          type: string
+          enum:
+          - active
+          - pending
+          - terminated
+        example: active
+      - name: limit
+        in: query
+        description: Maximum number of results to return.
+        schema:
+          type: integer
+        example: 50
+      - name: offset
+        in: query
+        description: Number of results to skip for pagination.
+        schema:
+          type: integer
+        example: 0
+      responses:
+        '200':
+          description: A list of enrollments.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrollmentList'
+              examples:
+                listEnrollments200Example:
+                  summary: Default listEnrollments 200 response
+                  x-microcks-default: true
+                  value:
+                    items:
+                    - {}
+                    total: 1
+                    limit: 1
+                    offset: 1
+        '401':
+          description: Unauthorized — invalid or missing authentication credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                listEnrollments401Example:
+                  summary: Default listEnrollments 401 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+        '403':
+          description: Forbidden — insufficient permissions for the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                listEnrollments403Example:
+                  summary: Default listEnrollments 403 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createEnrollment
+      summary: Aflac Create Enrollment
+      description: Submit a new benefit enrollment for an employee into a supplemental insurance product.
+      tags:
+      - Enrollment
+      requestBody:
+        required: true
+        description: Enrollment submission payload.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnrollmentRequest'
+            examples:
+              createEnrollmentRequestExample:
+                summary: Default createEnrollment request
+                x-microcks-default: true
+                value:
+                  employee_id: '500123'
+                  group_id: '500123'
+                  product_type: accident
+                  coverage_level: employee_only
+                  effective_date: '2025-03-15'
+                  dependents:
+                  - {}
+      responses:
+        '201':
+          description: Enrollment created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+              examples:
+                createEnrollment201Example:
+                  summary: Default createEnrollment 201 response
+                  x-microcks-default: true
+                  value:
+                    enrollment_id: '500123'
+                    employee_id: '500123'
+                    group_id: '500123'
+                    policy_id: '500123'
+                    product_type: accident
+                    coverage_level: employee_only
+                    status: active
+                    effective_date: '2025-03-15'
+                    termination_date: '2025-03-15'
+                    monthly_premium: 99.99
+                    created_at: '2025-03-15T14:30:00Z'
+                    updated_at: '2025-03-15T14:30:00Z'
+        '400':
+          description: Bad request — invalid enrollment data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                createEnrollment400Example:
+                  summary: Default createEnrollment 400 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                createEnrollment401Example:
+                  summary: Default createEnrollment 401 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+
+  /enrollments/{enrollment_id}:
+    get:
+      operationId: getEnrollment
+      summary: Aflac Get Enrollment
+      description: Retrieve a specific enrollment record by ID.
+      tags:
+      - Enrollment
+      parameters:
+      - name: enrollment_id
+        in: path
+        required: true
+        description: Unique enrollment identifier.
+        schema:
+          type: string
+        example: ENR-500123
+      responses:
+        '200':
+          description: Enrollment details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+              examples:
+                getEnrollment200Example:
+                  summary: Default getEnrollment 200 response
+                  x-microcks-default: true
+                  value:
+                    enrollment_id: '500123'
+                    employee_id: '500123'
+                    group_id: '500123'
+                    policy_id: '500123'
+                    product_type: accident
+                    coverage_level: employee_only
+                    status: active
+                    effective_date: '2025-03-15'
+                    termination_date: '2025-03-15'
+                    monthly_premium: 99.99
+                    created_at: '2025-03-15T14:30:00Z'
+                    updated_at: '2025-03-15T14:30:00Z'
+        '404':
+          description: Enrollment not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                getEnrollment404Example:
+                  summary: Default getEnrollment 404 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    put:
+      operationId: updateEnrollment
+      summary: Aflac Update Enrollment
+      description: Update an existing enrollment record (e.g., change coverage level or dependents).
+      tags:
+      - Enrollment
+      parameters:
+      - name: enrollment_id
+        in: path
+        required: true
+        description: Unique enrollment identifier.
+        schema:
+          type: string
+        example: ENR-500123
+      requestBody:
+        required: true
+        description: Updated enrollment data.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnrollmentRequest'
+            examples:
+              updateEnrollmentRequestExample:
+                summary: Default updateEnrollment request
+                x-microcks-default: true
+                value:
+                  employee_id: '500123'
+                  group_id: '500123'
+                  product_type: accident
+                  coverage_level: employee_only
+                  effective_date: '2025-03-15'
+                  dependents:
+                  - {}
+      responses:
+        '200':
+          description: Enrollment updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+              examples:
+                updateEnrollment200Example:
+                  summary: Default updateEnrollment 200 response
+                  x-microcks-default: true
+                  value:
+                    enrollment_id: '500123'
+                    employee_id: '500123'
+                    group_id: '500123'
+                    policy_id: '500123'
+                    product_type: accident
+                    coverage_level: employee_only
+                    status: active
+                    effective_date: '2025-03-15'
+                    termination_date: '2025-03-15'
+                    monthly_premium: 99.99
+                    created_at: '2025-03-15T14:30:00Z'
+                    updated_at: '2025-03-15T14:30:00Z'
+        '404':
+          description: Enrollment not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                updateEnrollment404Example:
+                  summary: Default updateEnrollment 404 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      operationId: terminateEnrollment
+      summary: Aflac Terminate Enrollment
+      description: Terminate an active enrollment for an employee (e.g., upon employment termination).
+      tags:
+      - Enrollment
+      parameters:
+      - name: enrollment_id
+        in: path
+        required: true
+        description: Unique enrollment identifier.
+        schema:
+          type: string
+        example: ENR-500123
+      responses:
+        '204':
+          description: Enrollment terminated successfully.
+        '404':
+          description: Enrollment not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                terminateEnrollment404Example:
+                  summary: Default terminateEnrollment 404 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+
+  /policies:
+    get:
+      operationId: listPolicies
+      summary: Aflac List Policies
+      description: Retrieve a list of supplemental insurance policies for a group or employee.
+      tags:
+      - Policies
+      parameters:
+      - name: group_id
+        in: query
+        description: Filter by employer group ID.
+        schema:
+          type: string
+        example: GRP-123456
+      - name: employee_id
+        in: query
+        description: Filter by employee ID.
+        schema:
+          type: string
+        example: EMP-789012
+      - name: product_type
+        in: query
+        description: Filter by supplemental insurance product type.
+        schema:
+          type: string
+          enum:
+          - accident
+          - critical_illness
+          - cancer
+          - hospital_indemnity
+          - disability
+          - life
+        example: accident
+      responses:
+        '200':
+          description: A list of policies.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyList'
+              examples:
+                listPolicies200Example:
+                  summary: Default listPolicies 200 response
+                  x-microcks-default: true
+                  value:
+                    items:
+                    - {}
+                    total: 1
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                listPolicies401Example:
+                  summary: Default listPolicies 401 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+
+  /policies/{policy_id}:
+    get:
+      operationId: getPolicy
+      summary: Aflac Get Policy
+      description: Retrieve a specific supplemental insurance policy by ID.
+      tags:
+      - Policies
+      parameters:
+      - name: policy_id
+        in: path
+        required: true
+        description: Unique policy identifier.
+        schema:
+          type: string
+        example: POL-987654
+      responses:
+        '200':
+          description: Policy details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Policy'
+              examples:
+                getPolicy200Example:
+                  summary: Default getPolicy 200 response
+                  x-microcks-default: true
+                  value:
+                    policy_id: '500123'
+                    enrollment_id: '500123'
+                    employee_id: '500123'
+                    group_id: '500123'
+                    product_type: example_value
+                    status: active
+                    face_value: 99.99
+                    monthly_premium: 99.99
+                    effective_date: '2025-03-15'
+        '404':
+          description: Policy not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                getPolicy404Example:
+                  summary: Default getPolicy 404 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+
+  /claims:
+    get:
+      operationId: listClaims
+      summary: Aflac List Claims
+      description: Retrieve a list of supplemental insurance claims for a policyholder or group.
+      tags:
+      - Claims
+      parameters:
+      - name: policy_id
+        in: query
+        description: Filter claims by policy ID.
+        schema:
+          type: string
+        example: POL-987654
+      - name: employee_id
+        in: query
+        description: Filter claims by employee ID.
+        schema:
+          type: string
+        example: EMP-789012
+      - name: status
+        in: query
+        description: Filter by claim status.
+        schema:
+          type: string
+          enum:
+          - submitted
+          - in_review
+          - approved
+          - denied
+          - paid
+        example: approved
+      responses:
+        '200':
+          description: A list of claims.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimList'
+              examples:
+                listClaims200Example:
+                  summary: Default listClaims 200 response
+                  x-microcks-default: true
+                  value:
+                    items:
+                    - {}
+                    total: 1
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                listClaims401Example:
+                  summary: Default listClaims 401 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: submitClaim
+      summary: Aflac Submit Claim
+      description: Submit a new supplemental insurance claim for review and payment.
+      tags:
+      - Claims
+      requestBody:
+        required: true
+        description: Claim submission payload.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimRequest'
+            examples:
+              submitClaimRequestExample:
+                summary: Default submitClaim request
+                x-microcks-default: true
+                value:
+                  policy_id: '500123'
+                  claim_type: accident
+                  incident_date: '2025-03-15'
+                  description: Example description
+      responses:
+        '201':
+          description: Claim submitted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Claim'
+              examples:
+                submitClaim201Example:
+                  summary: Default submitClaim 201 response
+                  x-microcks-default: true
+                  value:
+                    claim_id: '500123'
+                    policy_id: '500123'
+                    employee_id: '500123'
+                    claim_type: accident
+                    status: submitted
+                    incident_date: '2025-03-15'
+                    submission_date: '2025-03-15T14:30:00Z'
+                    benefit_amount: 99.99
+                    denial_reason: example_value
+        '400':
+          description: Invalid claim data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                submitClaim400Example:
+                  summary: Default submitClaim 400 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+
+  /claims/{claim_id}:
+    get:
+      operationId: getClaim
+      summary: Aflac Get Claim
+      description: Retrieve a specific claim record and its processing status.
+      tags:
+      - Claims
+      parameters:
+      - name: claim_id
+        in: path
+        required: true
+        description: Unique claim identifier.
+        schema:
+          type: string
+        example: CLM-112233
+      responses:
+        '200':
+          description: Claim details and status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Claim'
+              examples:
+                getClaim200Example:
+                  summary: Default getClaim 200 response
+                  x-microcks-default: true
+                  value:
+                    claim_id: '500123'
+                    policy_id: '500123'
+                    employee_id: '500123'
+                    claim_type: accident
+                    status: submitted
+                    incident_date: '2025-03-15'
+                    submission_date: '2025-03-15T14:30:00Z'
+                    benefit_amount: 99.99
+                    denial_reason: example_value
+        '404':
+          description: Claim not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                getClaim404Example:
+                  summary: Default getClaim 404 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+
+  /eligibility/verify:
+    post:
+      operationId: verifyEligibility
+      summary: Aflac Verify Eligibility
+      description: Verify an employee's eligibility for Aflac supplemental insurance products in real time.
+      tags:
+      - Eligibility
+      requestBody:
+        required: true
+        description: Eligibility verification request.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EligibilityRequest'
+            examples:
+              verifyEligibilityRequestExample:
+                summary: Default verifyEligibility request
+                x-microcks-default: true
+                value:
+                  employee_id: '500123'
+                  group_id: '500123'
+                  product_type: example_value
+      responses:
+        '200':
+          description: Eligibility verification result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EligibilityResponse'
+              examples:
+                verifyEligibility200Example:
+                  summary: Default verifyEligibility 200 response
+                  x-microcks-default: true
+                  value:
+                    eligible: true
+                    employee_id: '500123'
+                    group_id: '500123'
+                    product_type: example_value
+                    ineligibility_reason: example_value
+        '400':
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                verifyEligibility400Example:
+                  summary: Default verifyEligibility 400 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                verifyEligibility401Example:
+                  summary: Default verifyEligibility 401 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+
+  /groups:
+    get:
+      operationId: listGroups
+      summary: Aflac List Groups
+      description: Retrieve a list of employer groups associated with the authenticated partner.
+      tags:
+      - Groups
+      parameters:
+      - name: limit
+        in: query
+        description: Maximum number of results to return.
+        schema:
+          type: integer
+        example: 50
+      - name: offset
+        in: query
+        description: Number of results to skip.
+        schema:
+          type: integer
+        example: 0
+      responses:
+        '200':
+          description: A list of employer groups.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupList'
+              examples:
+                listGroups200Example:
+                  summary: Default listGroups 200 response
+                  x-microcks-default: true
+                  value:
+                    items:
+                    - {}
+                    total: 1
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                listGroups401Example:
+                  summary: Default listGroups 401 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+
+  /groups/{group_id}:
+    get:
+      operationId: getGroup
+      summary: Aflac Get Group
+      description: Retrieve a specific employer group record.
+      tags:
+      - Groups
+      parameters:
+      - name: group_id
+        in: path
+        required: true
+        description: Unique employer group identifier.
+        schema:
+          type: string
+        example: GRP-123456
+      responses:
+        '200':
+          description: Employer group details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+              examples:
+                getGroup200Example:
+                  summary: Default getGroup 200 response
+                  x-microcks-default: true
+                  value:
+                    group_id: '500123'
+                    name: Example Name
+                    employer_name: Example Name
+                    status: active
+                    employee_count: 1
+                    effective_date: '2025-03-15'
+        '404':
+          description: Group not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                getGroup404Example:
+                  summary: Default getGroup 404 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 client credentials flow for server-to-server API access.
+      flows:
+        clientCredentials:
+          tokenUrl: https://auth.enterprise-connect.aflac.com/oauth/token
+          scopes:
+            enrollment:read: Read enrollment records
+            enrollment:write: Create and update enrollments
+            claims:read: Read claim records
+            claims:write: Submit claims
+            eligibility:read: Verify eligibility
+            groups:read: Read group records
+  schemas:
+    Enrollment:
+      type: object
+      description: A supplemental insurance enrollment record for an employee.
+      properties:
+        enrollment_id:
+          type: string
+          description: Unique enrollment identifier.
+          example: ENR-500123
+        employee_id:
+          type: string
+          description: Employee identifier.
+          example: EMP-789012
+        group_id:
+          type: string
+          description: Employer group identifier.
+          example: GRP-123456
+        policy_id:
+          type: string
+          description: Associated policy identifier assigned upon enrollment.
+          example: POL-987654
+        product_type:
+          type: string
+          description: Type of supplemental insurance product.
+          enum:
+          - accident
+          - critical_illness
+          - cancer
+          - hospital_indemnity
+          - disability
+          - life
+          example: accident
+        coverage_level:
+          type: string
+          description: Coverage level selected by the employee.
+          enum:
+          - employee_only
+          - employee_spouse
+          - employee_children
+          - family
+          example: family
+        status:
+          type: string
+          description: Current enrollment status.
+          enum:
+          - active
+          - pending
+          - terminated
+          example: active
+        effective_date:
+          type: string
+          format: date
+          description: Date the coverage became effective.
+          example: '2025-01-01'
+        termination_date:
+          type: string
+          format: date
+          description: Date the coverage was terminated, if applicable.
+          example: '2025-12-31'
+        monthly_premium:
+          type: number
+          description: Monthly premium amount in USD.
+          example: 18.50
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the enrollment was created.
+          example: '2024-11-01T10:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the enrollment was last updated.
+          example: '2025-01-01T00:00:00Z'
+
+    EnrollmentRequest:
+      type: object
+      description: Request payload for creating or updating an enrollment.
+      required:
+      - employee_id
+      - group_id
+      - product_type
+      - coverage_level
+      - effective_date
+      properties:
+        employee_id:
+          type: string
+          description: Employee identifier.
+          example: EMP-789012
+        group_id:
+          type: string
+          description: Employer group identifier.
+          example: GRP-123456
+        product_type:
+          type: string
+          description: Type of supplemental insurance product to enroll in.
+          enum:
+          - accident
+          - critical_illness
+          - cancer
+          - hospital_indemnity
+          - disability
+          - life
+          example: accident
+        coverage_level:
+          type: string
+          description: Coverage level for the enrollment.
+          enum:
+          - employee_only
+          - employee_spouse
+          - employee_children
+          - family
+          example: employee_only
+        effective_date:
+          type: string
+          format: date
+          description: Requested effective date for coverage.
+          example: '2025-01-01'
+        dependents:
+          type: array
+          description: List of dependents to include in family coverage.
+          items:
+            $ref: '#/components/schemas/Dependent'
+
+          example:
+          - example_value
+    EnrollmentList:
+      type: object
+      description: Paginated list of enrollment records.
+      properties:
+        items:
+          type: array
+          description: Array of enrollment records.
+          items:
+            $ref: '#/components/schemas/Enrollment'
+          example:
+          - example_value
+        total:
+          type: integer
+          description: Total number of matching enrollments.
+          example: 150
+        limit:
+          type: integer
+          description: Maximum number of results returned.
+          example: 50
+        offset:
+          type: integer
+          description: Number of results skipped.
+          example: 0
+
+    Dependent:
+      type: object
+      description: A dependent to be covered under a family enrollment.
+      properties:
+        first_name:
+          type: string
+          description: Dependent's first name.
+          example: Jane
+        last_name:
+          type: string
+          description: Dependent's last name.
+          example: Smith
+        date_of_birth:
+          type: string
+          format: date
+          description: Dependent's date of birth.
+          example: '1990-06-15'
+        relationship:
+          type: string
+          description: Relationship to the employee.
+          enum:
+          - spouse
+          - child
+          example: spouse
+
+    Policy:
+      type: object
+      description: A supplemental insurance policy record.
+      properties:
+        policy_id:
+          type: string
+          description: Unique policy identifier.
+          example: POL-987654
+        enrollment_id:
+          type: string
+          description: Associated enrollment identifier.
+          example: ENR-500123
+        employee_id:
+          type: string
+          description: Policyholder employee identifier.
+          example: EMP-789012
+        group_id:
+          type: string
+          description: Employer group identifier.
+          example: GRP-123456
+        product_type:
+          type: string
+          description: Type of supplemental insurance product.
+          example: accident
+        status:
+          type: string
+          description: Policy status.
+          enum:
+          - active
+          - lapsed
+          - terminated
+          example: active
+        face_value:
+          type: number
+          description: Coverage face value amount in USD.
+          example: 50000
+        monthly_premium:
+          type: number
+          description: Monthly premium amount in USD.
+          example: 18.50
+        effective_date:
+          type: string
+          format: date
+          description: Policy effective date.
+          example: '2025-01-01'
+
+    PolicyList:
+      type: object
+      description: Paginated list of policies.
+      properties:
+        items:
+          type: array
+          description: Array of policy records.
+          items:
+            $ref: '#/components/schemas/Policy'
+          example:
+          - example_value
+        total:
+          type: integer
+          description: Total number of matching policies.
+          example: 75
+
+    Claim:
+      type: object
+      description: A supplemental insurance claim record.
+      properties:
+        claim_id:
+          type: string
+          description: Unique claim identifier.
+          example: CLM-112233
+        policy_id:
+          type: string
+          description: Policy associated with the claim.
+          example: POL-987654
+        employee_id:
+          type: string
+          description: Claimant employee identifier.
+          example: EMP-789012
+        claim_type:
+          type: string
+          description: Type of claim event.
+          enum:
+          - accident
+          - critical_illness
+          - cancer_diagnosis
+          - hospitalization
+          - disability
+          example: accident
+        status:
+          type: string
+          description: Current claim processing status.
+          enum:
+          - submitted
+          - in_review
+          - approved
+          - denied
+          - paid
+          example: approved
+        incident_date:
+          type: string
+          format: date
+          description: Date of the qualifying event.
+          example: '2025-02-10'
+        submission_date:
+          type: string
+          format: date-time
+          description: Timestamp when the claim was submitted.
+          example: '2025-02-15T09:30:00Z'
+        benefit_amount:
+          type: number
+          description: Approved benefit payment amount in USD.
+          example: 1500.00
+        denial_reason:
+          type: string
+          description: Reason for denial if the claim was denied.
+          example: Condition not covered under policy terms.
+
+    ClaimRequest:
+      type: object
+      description: Request payload for submitting a new claim.
+      required:
+      - policy_id
+      - claim_type
+      - incident_date
+      properties:
+        policy_id:
+          type: string
+          description: Policy against which to file the claim.
+          example: POL-987654
+        claim_type:
+          type: string
+          description: Type of claim event.
+          enum:
+          - accident
+          - critical_illness
+          - cancer_diagnosis
+          - hospitalization
+          - disability
+          example: accident
+        incident_date:
+          type: string
+          format: date
+          description: Date of the qualifying event.
+          example: '2025-02-10'
+        description:
+          type: string
+          description: Description of the incident or diagnosis.
+          example: Employee sustained a broken arm in a workplace accident.
+
+    ClaimList:
+      type: object
+      description: Paginated list of claims.
+      properties:
+        items:
+          type: array
+          description: Array of claim records.
+          items:
+            $ref: '#/components/schemas/Claim'
+          example:
+          - example_value
+        total:
+          type: integer
+          description: Total number of matching claims.
+          example: 30
+
+    EligibilityRequest:
+      type: object
+      description: Request payload for eligibility verification.
+      required:
+      - employee_id
+      - group_id
+      - product_type
+      properties:
+        employee_id:
+          type: string
+          description: Employee identifier to verify.
+          example: EMP-789012
+        group_id:
+          type: string
+          description: Employer group identifier.
+          example: GRP-123456
+        product_type:
+          type: string
+          description: Supplemental insurance product to check eligibility for.
+          example: accident
+
+    EligibilityResponse:
+      type: object
+      description: Result of an eligibility verification check.
+      properties:
+        eligible:
+          type: boolean
+          description: Whether the employee is eligible for the product.
+          example: true
+        employee_id:
+          type: string
+          description: Verified employee identifier.
+          example: EMP-789012
+        group_id:
+          type: string
+          description: Employer group identifier.
+          example: GRP-123456
+        product_type:
+          type: string
+          description: Product type checked.
+          example: accident
+        ineligibility_reason:
+          type: string
+          description: Reason for ineligibility if not eligible.
+          example: Employee not in an eligible employment class.
+
+    Group:
+      type: object
+      description: An employer group record.
+      properties:
+        group_id:
+          type: string
+          description: Unique employer group identifier.
+          example: GRP-123456
+        name:
+          type: string
+          description: Employer group name.
+          example: Example Corp Benefits Group
+        employer_name:
+          type: string
+          description: Legal employer name.
+          example: Example Corporation
+        status:
+          type: string
+          description: Group status.
+          enum:
+          - active
+          - inactive
+          example: active
+        employee_count:
+          type: integer
+          description: Number of enrolled employees.
+          example: 250
+        effective_date:
+          type: string
+          format: date
+          description: Group effective date.
+          example: '2025-01-01'
+
+    GroupList:
+      type: object
+      description: Paginated list of employer groups.
+      properties:
+        items:
+          type: array
+          description: Array of group records.
+          items:
+            $ref: '#/components/schemas/Group'
+          example:
+          - example_value
+        total:
+          type: integer
+          description: Total number of groups.
+          example: 10
+
+    Error:
+      type: object
+      description: API error response.
+      properties:
+        error:
+          type: string
+          description: Error code.
+          example: not_found
+        message:
+          type: string
+          description: Human-readable error description.
+          example: The requested resource was not found.
+        request_id:
+          type: string
+          description: Unique request ID for support reference.
+          example: req-a1b2c3d4e5

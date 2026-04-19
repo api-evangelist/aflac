@@ -1,0 +1,11 @@
+{
+  "claim_id": "500123",
+  "policy_id": "500123",
+  "employee_id": "500123",
+  "claim_type": "accident",
+  "status": "submitted",
+  "incident_date": "2025-03-15",
+  "submission_date": "2025-03-15T14:30:00Z",
+  "benefit_amount": 99.99,
+  "denial_reason": "example_value"
+}

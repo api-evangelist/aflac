@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/aflac/refs/heads/main/json-schema/enterprise-connect-claim-request-schema.json",
+  "title": "ClaimRequest",
+  "description": "Request payload for submitting a new claim.",
+  "type": "object",
+  "properties": {
+    "policy_id": {
+      "type": "string",
+      "description": "Policy against which to file the claim.",
+      "example": "POL-987654"
+    },
+    "claim_type": {
+      "type": "string",
+      "description": "Type of claim event.",
+      "enum": [
+        "accident",
+        "critical_illness",
+        "cancer_diagnosis",
+        "hospitalization",
+        "disability"
+      ],
+      "example": "accident"
+    },
+    "incident_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of the qualifying event.",
+      "example": "2025-02-10"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the incident or diagnosis.",
+      "example": "Employee sustained a broken arm in a workplace accident."
+    }
+  },
+  "required": [
+    "policy_id",
+    "claim_type",
+    "incident_date"
+  ]
+}

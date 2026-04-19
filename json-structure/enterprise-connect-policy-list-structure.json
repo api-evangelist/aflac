@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/aflac/refs/heads/main/json-structure/enterprise-connect-policy-list-structure.json",
+  "name": "PolicyList",
+  "description": "Paginated list of policies.",
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "description": "Array of policy records.",
+      "items": {
+        "$ref": "#/components/schemas/Policy"
+      },
+      "example": [
+        "example_value"
+      ]
+    },
+    "total": {
+      "type": "int32",
+      "description": "Total number of matching policies.",
+      "example": 75
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "employee_id": "500123",
+  "group_id": "500123",
+  "product_type": "accident",
+  "coverage_level": "employee_only",
+  "effective_date": "2025-03-15",
+  "dependents": [
+    "example_value"
+  ]
+}

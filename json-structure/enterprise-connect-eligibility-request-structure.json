@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/aflac/refs/heads/main/json-structure/enterprise-connect-eligibility-request-structure.json",
+  "name": "EligibilityRequest",
+  "description": "Request payload for eligibility verification.",
+  "type": "object",
+  "properties": {
+    "employee_id": {
+      "type": "string",
+      "description": "Employee identifier to verify.",
+      "example": "EMP-789012"
+    },
+    "group_id": {
+      "type": "string",
+      "description": "Employer group identifier.",
+      "example": "GRP-123456"
+    },
+    "product_type": {
+      "type": "string",
+      "description": "Supplemental insurance product to check eligibility for.",
+      "example": "accident"
+    }
+  },
+  "required": [
+    "employee_id",
+    "group_id",
+    "product_type"
+  ]
+}
