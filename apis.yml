@@ -154,7 +154,7 @@ common:
   url: json-structure/enterprise-connect-policy-list-structure.json
 - type: JSONStructure
   url: json-structure/enterprise-connect-policy-structure.json
-- type: JSON-LD
+- type: JSONLD
   url: json-ld/aflac-enterprise-context.jsonld
 - type: Example
   url: examples/enterprise-connect-claim-example.json
