@@ -52,6 +52,8 @@ apis:
     indemnity, and short-term disability insurance.
 
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/aflac
 - type: Portal
   url: https://docs.enterprise-connect.aflac.com
 - type: Website

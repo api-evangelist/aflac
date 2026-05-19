@@ -1,0 +1,133 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Aflac Enterprise Connect API — Policies
+  description: 'Aflac Enterprise Connect API — Policies. 2 operations. Lead operation: Aflac List Policies. Self-contained
+    Naftiko capability covering one Aflac business surface.'
+  tags:
+  - Aflac
+  - Policies
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    AFLAC_API_KEY: AFLAC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: enterprise-connect-policies
+    baseUri: https://api.enterprise-connect.aflac.com/v1
+    description: Aflac Enterprise Connect API — Policies business capability. Self-contained, no shared references.
+    resources:
+    - name: policies
+      path: /policies
+      operations:
+      - name: listpolicies
+        method: GET
+        description: Aflac List Policies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: group_id
+          in: query
+          type: string
+          description: Filter by employer group ID.
+        - name: employee_id
+          in: query
+          type: string
+          description: Filter by employee ID.
+        - name: product_type
+          in: query
+          type: string
+          description: Filter by supplemental insurance product type.
+    - name: policies-policy_id
+      path: /policies/{policy_id}
+      operations:
+      - name: getpolicy
+        method: GET
+        description: Aflac Get Policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: policy_id
+          in: path
+          type: string
+          description: Unique policy identifier.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.AFLAC_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: enterprise-connect-policies-rest
+    port: 8080
+    description: REST adapter for Aflac Enterprise Connect API — Policies. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/policies
+      name: policies
+      description: REST surface for policies.
+      operations:
+      - method: GET
+        name: listpolicies
+        description: Aflac List Policies
+        call: enterprise-connect-policies.listpolicies
+        with:
+          group_id: rest.group_id
+          employee_id: rest.employee_id
+          product_type: rest.product_type
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/policies/{policy-id}
+      name: policies-policy-id
+      description: REST surface for policies-policy_id.
+      operations:
+      - method: GET
+        name: getpolicy
+        description: Aflac Get Policy
+        call: enterprise-connect-policies.getpolicy
+        with:
+          policy_id: rest.policy_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: enterprise-connect-policies-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Aflac Enterprise Connect API — Policies. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: aflac-list-policies
+      description: Aflac List Policies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: enterprise-connect-policies.listpolicies
+      with:
+        group_id: tools.group_id
+        employee_id: tools.employee_id
+        product_type: tools.product_type
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: aflac-get-policy
+      description: Aflac Get Policy
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: enterprise-connect-policies.getpolicy
+      with:
+        policy_id: tools.policy_id
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Aflac Enterprise Connect API — Eligibility
+  description: 'Aflac Enterprise Connect API — Eligibility. 1 operations. Lead operation: Aflac Verify Eligibility. Self-contained
+    Naftiko capability covering one Aflac business surface.'
+  tags:
+  - Aflac
+  - Eligibility
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    AFLAC_API_KEY: AFLAC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: enterprise-connect-eligibility
+    baseUri: https://api.enterprise-connect.aflac.com/v1
+    description: Aflac Enterprise Connect API — Eligibility business capability. Self-contained, no shared references.
+    resources:
+    - name: eligibility-verify
+      path: /eligibility/verify
+      operations:
+      - name: verifyeligibility
+        method: POST
+        description: Aflac Verify Eligibility
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.AFLAC_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: enterprise-connect-eligibility-rest
+    port: 8080
+    description: REST adapter for Aflac Enterprise Connect API — Eligibility. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/eligibility/verify
+      name: eligibility-verify
+      description: REST surface for eligibility-verify.
+      operations:
+      - method: POST
+        name: verifyeligibility
+        description: Aflac Verify Eligibility
+        call: enterprise-connect-eligibility.verifyeligibility
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: enterprise-connect-eligibility-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Aflac Enterprise Connect API — Eligibility. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: aflac-verify-eligibility
+      description: Aflac Verify Eligibility
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: enterprise-connect-eligibility.verifyeligibility
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,257 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Aflac Enterprise Connect API — Enrollment
+  description: 'Aflac Enterprise Connect API — Enrollment. 5 operations. Lead operation: Aflac List Enrollments. Self-contained
+    Naftiko capability covering one Aflac business surface.'
+  tags:
+  - Aflac
+  - Enrollment
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    AFLAC_API_KEY: AFLAC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: enterprise-connect-enrollment
+    baseUri: https://api.enterprise-connect.aflac.com/v1
+    description: Aflac Enterprise Connect API — Enrollment business capability. Self-contained, no shared references.
+    resources:
+    - name: enrollments
+      path: /enrollments
+      operations:
+      - name: listenrollments
+        method: GET
+        description: Aflac List Enrollments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: group_id
+          in: query
+          type: string
+          description: Filter enrollments by employer group ID.
+        - name: employee_id
+          in: query
+          type: string
+          description: Filter enrollments by employee ID.
+        - name: status
+          in: query
+          type: string
+          description: Filter by enrollment status (active, pending, terminated).
+        - name: limit
+          in: query
+          type: integer
+          description: Maximum number of results to return.
+        - name: offset
+          in: query
+          type: integer
+          description: Number of results to skip for pagination.
+      - name: createenrollment
+        method: POST
+        description: Aflac Create Enrollment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: enrollments-enrollment_id
+      path: /enrollments/{enrollment_id}
+      operations:
+      - name: getenrollment
+        method: GET
+        description: Aflac Get Enrollment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: enrollment_id
+          in: path
+          type: string
+          description: Unique enrollment identifier.
+          required: true
+      - name: updateenrollment
+        method: PUT
+        description: Aflac Update Enrollment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: enrollment_id
+          in: path
+          type: string
+          description: Unique enrollment identifier.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: terminateenrollment
+        method: DELETE
+        description: Aflac Terminate Enrollment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: enrollment_id
+          in: path
+          type: string
+          description: Unique enrollment identifier.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.AFLAC_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: enterprise-connect-enrollment-rest
+    port: 8080
+    description: REST adapter for Aflac Enterprise Connect API — Enrollment. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/enrollments
+      name: enrollments
+      description: REST surface for enrollments.
+      operations:
+      - method: GET
+        name: listenrollments
+        description: Aflac List Enrollments
+        call: enterprise-connect-enrollment.listenrollments
+        with:
+          group_id: rest.group_id
+          employee_id: rest.employee_id
+          status: rest.status
+          limit: rest.limit
+          offset: rest.offset
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createenrollment
+        description: Aflac Create Enrollment
+        call: enterprise-connect-enrollment.createenrollment
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/enrollments/{enrollment-id}
+      name: enrollments-enrollment-id
+      description: REST surface for enrollments-enrollment_id.
+      operations:
+      - method: GET
+        name: getenrollment
+        description: Aflac Get Enrollment
+        call: enterprise-connect-enrollment.getenrollment
+        with:
+          enrollment_id: rest.enrollment_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateenrollment
+        description: Aflac Update Enrollment
+        call: enterprise-connect-enrollment.updateenrollment
+        with:
+          enrollment_id: rest.enrollment_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: terminateenrollment
+        description: Aflac Terminate Enrollment
+        call: enterprise-connect-enrollment.terminateenrollment
+        with:
+          enrollment_id: rest.enrollment_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: enterprise-connect-enrollment-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Aflac Enterprise Connect API — Enrollment. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: aflac-list-enrollments
+      description: Aflac List Enrollments
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: enterprise-connect-enrollment.listenrollments
+      with:
+        group_id: tools.group_id
+        employee_id: tools.employee_id
+        status: tools.status
+        limit: tools.limit
+        offset: tools.offset
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: aflac-create-enrollment
+      description: Aflac Create Enrollment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: enterprise-connect-enrollment.createenrollment
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: aflac-get-enrollment
+      description: Aflac Get Enrollment
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: enterprise-connect-enrollment.getenrollment
+      with:
+        enrollment_id: tools.enrollment_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: aflac-update-enrollment
+      description: Aflac Update Enrollment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: enterprise-connect-enrollment.updateenrollment
+      with:
+        enrollment_id: tools.enrollment_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: aflac-terminate-enrollment
+      description: Aflac Terminate Enrollment
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: enterprise-connect-enrollment.terminateenrollment
+      with:
+        enrollment_id: tools.enrollment_id
+      outputParameters:
+      - type: object
+        mapping: $.

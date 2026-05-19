@@ -1,0 +1,168 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Aflac Enterprise Connect API — Claims
+  description: 'Aflac Enterprise Connect API — Claims. 3 operations. Lead operation: Aflac List Claims. Self-contained Naftiko
+    capability covering one Aflac business surface.'
+  tags:
+  - Aflac
+  - Claims
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    AFLAC_API_KEY: AFLAC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: enterprise-connect-claims
+    baseUri: https://api.enterprise-connect.aflac.com/v1
+    description: Aflac Enterprise Connect API — Claims business capability. Self-contained, no shared references.
+    resources:
+    - name: claims
+      path: /claims
+      operations:
+      - name: listclaims
+        method: GET
+        description: Aflac List Claims
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: policy_id
+          in: query
+          type: string
+          description: Filter claims by policy ID.
+        - name: employee_id
+          in: query
+          type: string
+          description: Filter claims by employee ID.
+        - name: status
+          in: query
+          type: string
+          description: Filter by claim status.
+      - name: submitclaim
+        method: POST
+        description: Aflac Submit Claim
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: claims-claim_id
+      path: /claims/{claim_id}
+      operations:
+      - name: getclaim
+        method: GET
+        description: Aflac Get Claim
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: claim_id
+          in: path
+          type: string
+          description: Unique claim identifier.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.AFLAC_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: enterprise-connect-claims-rest
+    port: 8080
+    description: REST adapter for Aflac Enterprise Connect API — Claims. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/claims
+      name: claims
+      description: REST surface for claims.
+      operations:
+      - method: GET
+        name: listclaims
+        description: Aflac List Claims
+        call: enterprise-connect-claims.listclaims
+        with:
+          policy_id: rest.policy_id
+          employee_id: rest.employee_id
+          status: rest.status
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: submitclaim
+        description: Aflac Submit Claim
+        call: enterprise-connect-claims.submitclaim
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/claims/{claim-id}
+      name: claims-claim-id
+      description: REST surface for claims-claim_id.
+      operations:
+      - method: GET
+        name: getclaim
+        description: Aflac Get Claim
+        call: enterprise-connect-claims.getclaim
+        with:
+          claim_id: rest.claim_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: enterprise-connect-claims-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Aflac Enterprise Connect API — Claims. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: aflac-list-claims
+      description: Aflac List Claims
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: enterprise-connect-claims.listclaims
+      with:
+        policy_id: tools.policy_id
+        employee_id: tools.employee_id
+        status: tools.status
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: aflac-submit-claim
+      description: Aflac Submit Claim
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: enterprise-connect-claims.submitclaim
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: aflac-get-claim
+      description: Aflac Get Claim
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: enterprise-connect-claims.getclaim
+      with:
+        claim_id: tools.claim_id
+      outputParameters:
+      - type: object
+        mapping: $.
