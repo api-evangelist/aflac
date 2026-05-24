@@ -192,6 +192,8 @@ common:
     url: vocabulary/aflac-vocabulary.yaml
   - type: NaftikoCapability
     url: capabilities/benefits-administration.yaml
+  - type: LLMsTxt
+    url: https://docs.enterprise-connect.aflac.com/llms.txt
 description: >-
   Aflac is America's leading provider of supplemental insurance, offering products
   that pay benefits when a policyholder experiences an accident, illness, or injury.
