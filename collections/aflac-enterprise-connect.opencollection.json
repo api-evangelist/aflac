@@ -1,0 +1,354 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Aflac Enterprise Connect API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://auth.enterprise-connect.aflac.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Enrollment",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Aflac List Enrollments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.enterprise-connect.aflac.com/v1/enrollments",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "GRP-123456",
+                "type": "query",
+                "description": "Filter enrollments by employer group ID."
+              },
+              {
+                "name": "employee_id",
+                "value": "EMP-789012",
+                "type": "query",
+                "description": "Filter enrollments by employee ID."
+              },
+              {
+                "name": "status",
+                "value": "active",
+                "type": "query",
+                "description": "Filter by enrollment status (active, pending, terminated)."
+              },
+              {
+                "name": "limit",
+                "value": "50",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              },
+              {
+                "name": "offset",
+                "value": "0",
+                "type": "query",
+                "description": "Number of results to skip for pagination."
+              }
+            ]
+          },
+          "docs": "Retrieve a list of benefit enrollments for a group or employee."
+        },
+        {
+          "info": {
+            "name": "Aflac Create Enrollment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.enterprise-connect.aflac.com/v1/enrollments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit a new benefit enrollment for an employee into a supplemental insurance product."
+        },
+        {
+          "info": {
+            "name": "Aflac Get Enrollment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.enterprise-connect.aflac.com/v1/enrollments/:enrollment_id",
+            "params": [
+              {
+                "name": "enrollment_id",
+                "value": "ENR-500123",
+                "type": "path",
+                "description": "Unique enrollment identifier."
+              }
+            ]
+          },
+          "docs": "Retrieve a specific enrollment record by ID."
+        },
+        {
+          "info": {
+            "name": "Aflac Update Enrollment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.enterprise-connect.aflac.com/v1/enrollments/:enrollment_id",
+            "params": [
+              {
+                "name": "enrollment_id",
+                "value": "ENR-500123",
+                "type": "path",
+                "description": "Unique enrollment identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing enrollment record (e.g., change coverage level or dependents)."
+        },
+        {
+          "info": {
+            "name": "Aflac Terminate Enrollment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.enterprise-connect.aflac.com/v1/enrollments/:enrollment_id",
+            "params": [
+              {
+                "name": "enrollment_id",
+                "value": "ENR-500123",
+                "type": "path",
+                "description": "Unique enrollment identifier."
+              }
+            ]
+          },
+          "docs": "Terminate an active enrollment for an employee (e.g., upon employment termination)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Policies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Aflac List Policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.enterprise-connect.aflac.com/v1/policies",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "GRP-123456",
+                "type": "query",
+                "description": "Filter by employer group ID."
+              },
+              {
+                "name": "employee_id",
+                "value": "EMP-789012",
+                "type": "query",
+                "description": "Filter by employee ID."
+              },
+              {
+                "name": "product_type",
+                "value": "accident",
+                "type": "query",
+                "description": "Filter by supplemental insurance product type."
+              }
+            ]
+          },
+          "docs": "Retrieve a list of supplemental insurance policies for a group or employee."
+        },
+        {
+          "info": {
+            "name": "Aflac Get Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.enterprise-connect.aflac.com/v1/policies/:policy_id",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "POL-987654",
+                "type": "path",
+                "description": "Unique policy identifier."
+              }
+            ]
+          },
+          "docs": "Retrieve a specific supplemental insurance policy by ID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Claims",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Aflac List Claims",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.enterprise-connect.aflac.com/v1/claims",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "POL-987654",
+                "type": "query",
+                "description": "Filter claims by policy ID."
+              },
+              {
+                "name": "employee_id",
+                "value": "EMP-789012",
+                "type": "query",
+                "description": "Filter claims by employee ID."
+              },
+              {
+                "name": "status",
+                "value": "approved",
+                "type": "query",
+                "description": "Filter by claim status."
+              }
+            ]
+          },
+          "docs": "Retrieve a list of supplemental insurance claims for a policyholder or group."
+        },
+        {
+          "info": {
+            "name": "Aflac Submit Claim",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.enterprise-connect.aflac.com/v1/claims",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit a new supplemental insurance claim for review and payment."
+        },
+        {
+          "info": {
+            "name": "Aflac Get Claim",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.enterprise-connect.aflac.com/v1/claims/:claim_id",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "CLM-112233",
+                "type": "path",
+                "description": "Unique claim identifier."
+              }
+            ]
+          },
+          "docs": "Retrieve a specific claim record and its processing status."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Eligibility",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Aflac Verify Eligibility",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.enterprise-connect.aflac.com/v1/eligibility/verify",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Verify an employee's eligibility for Aflac supplemental insurance products in real time."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Groups",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Aflac List Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.enterprise-connect.aflac.com/v1/groups",
+            "params": [
+              {
+                "name": "limit",
+                "value": "50",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              },
+              {
+                "name": "offset",
+                "value": "0",
+                "type": "query",
+                "description": "Number of results to skip."
+              }
+            ]
+          },
+          "docs": "Retrieve a list of employer groups associated with the authenticated partner."
+        },
+        {
+          "info": {
+            "name": "Aflac Get Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.enterprise-connect.aflac.com/v1/groups/:group_id",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "GRP-123456",
+                "type": "path",
+                "description": "Unique employer group identifier."
+              }
+            ]
+          },
+          "docs": "Retrieve a specific employer group record."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
