@@ -57,7 +57,7 @@ common:
     url: https://docs.enterprise-connect.aflac.com
   - type: Website
     url: https://www.aflac.com
-  - type: SignUp
+  - type: Signup
     url: https://www.aflac.com/business/default.aspx
   - type: TermsOfService
     url: https://www.aflac.com/about-aflac/legal/terms-and-conditions.aspx
@@ -175,37 +175,37 @@ common:
     url: json-structure/enterprise-connect-policy-structure.json
   - type: JSONLD
     url: json-ld/aflac-enterprise-context.jsonld
-  - type: Example
+  - type: Examples
     url: examples/enterprise-connect-claim-example.json
-  - type: Example
+  - type: Examples
     url: examples/enterprise-connect-claim-list-example.json
-  - type: Example
+  - type: Examples
     url: examples/enterprise-connect-claim-request-example.json
-  - type: Example
+  - type: Examples
     url: examples/enterprise-connect-dependent-example.json
-  - type: Example
+  - type: Examples
     url: examples/enterprise-connect-eligibility-request-example.json
-  - type: Example
+  - type: Examples
     url: examples/enterprise-connect-eligibility-response-example.json
-  - type: Example
+  - type: Examples
     url: examples/enterprise-connect-enrollment-example.json
-  - type: Example
+  - type: Examples
     url: examples/enterprise-connect-enrollment-list-example.json
-  - type: Example
+  - type: Examples
     url: examples/enterprise-connect-enrollment-request-example.json
-  - type: Example
+  - type: Examples
     url: examples/enterprise-connect-group-example.json
-  - type: Example
+  - type: Examples
     url: examples/enterprise-connect-group-list-example.json
-  - type: Example
+  - type: Examples
     url: examples/enterprise-connect-policy-example.json
-  - type: Example
+  - type: Examples
     url: examples/enterprise-connect-policy-list-example.json
   - type: SpectralRules
     url: rules/aflac-spectral-rules.yml
   - type: Vocabulary
     url: vocabulary/aflac-vocabulary.yaml
-  - type: LLMsTxt
+  - type: LlmsText
     url: https://docs.enterprise-connect.aflac.com/llms.txt
 description: >-
   Aflac is America's leading provider of supplemental insurance, offering products that pay benefits when a policyholder
