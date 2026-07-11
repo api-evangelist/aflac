@@ -49,6 +49,8 @@ apis:
       supplemental products including accident, critical illness, cancer, hospital indemnity, and short-term disability
       insurance.
 common:
+  - type: OAuthScopes
+    url: scopes/aflac-scopes.yml
   - type: GitHubOrganization
     url: https://github.com/Aflac-SCM
   - type: LinkedIn
@@ -65,6 +67,8 @@ common:
     url: https://www.aflac.com/about-aflac/legal/privacy-policy.aspx
   - type: Support
     url: https://www.aflac.com/contact-aflac/default.aspx
+  - type: Blog
+    url: https://newsroom.aflac.com/
   - type: Features
     data:
       - name: Electronic Benefits Enrollment

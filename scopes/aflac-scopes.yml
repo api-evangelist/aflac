@@ -1,0 +1,47 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/aflac-enterprise-connect-openapi.yml
+schemes:
+- name: oauth2
+  source: openapi/aflac-enterprise-connect-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://auth.enterprise-connect.aflac.com/oauth/token
+  description: OAuth 2.0 client credentials flow for server-to-server API access.
+scopes:
+- scope: claims:read
+  description: Read claim records
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/aflac-enterprise-connect-openapi.yml
+- scope: claims:write
+  description: Submit claims
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/aflac-enterprise-connect-openapi.yml
+- scope: eligibility:read
+  description: Verify eligibility
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/aflac-enterprise-connect-openapi.yml
+- scope: enrollment:read
+  description: Read enrollment records
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/aflac-enterprise-connect-openapi.yml
+- scope: enrollment:write
+  description: Create and update enrollments
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/aflac-enterprise-connect-openapi.yml
+- scope: groups:read
+  description: Read group records
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/aflac-enterprise-connect-openapi.yml
