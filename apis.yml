@@ -49,6 +49,8 @@ apis:
       supplemental products including accident, critical illness, cancer, hospital indemnity, and short-term disability
       insurance.
 common:
+  - type: AgenticAccess
+    url: agentic-access/aflac-agentic-access.yml
   - type: DomainSecurity
     url: security/aflac-domain-security.yml
   - type: Authentication
