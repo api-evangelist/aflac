@@ -1,0 +1,166 @@
+openapi: 3.0.3
+info:
+  title: Aflac Enterprise Connect Claims Eligibility API
+  description: The Aflac Enterprise Connect (AEC) API enables benefits administrators, HR platforms, and third-party enrollment systems to integrate with Aflac's supplemental insurance platform. It provides REST API access to benefits enrollment, policy management, claims status, and eligibility verification for group and individual supplemental insurance products.
+  version: '1.0'
+  contact:
+    name: Aflac Enterprise Connect Support
+    url: https://docs.enterprise-connect.aflac.com
+  x-generated-from: documentation
+servers:
+- url: https://api.enterprise-connect.aflac.com/v1
+  description: Production Server
+- url: https://sandbox.enterprise-connect.aflac.com/v1
+  description: Sandbox Server
+security:
+- oauth2: []
+tags:
+- name: Eligibility
+  description: Employee eligibility verification operations.
+paths:
+  /eligibility/verify:
+    post:
+      operationId: verifyEligibility
+      summary: Aflac Verify Eligibility
+      description: Verify an employee's eligibility for Aflac supplemental insurance products in real time.
+      tags:
+      - Eligibility
+      requestBody:
+        required: true
+        description: Eligibility verification request.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EligibilityRequest'
+            examples:
+              verifyEligibilityRequestExample:
+                summary: Default verifyEligibility request
+                x-microcks-default: true
+                value:
+                  employee_id: '500123'
+                  group_id: '500123'
+                  product_type: example_value
+      responses:
+        '200':
+          description: Eligibility verification result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EligibilityResponse'
+              examples:
+                verifyEligibility200Example:
+                  summary: Default verifyEligibility 200 response
+                  x-microcks-default: true
+                  value:
+                    eligible: true
+                    employee_id: '500123'
+                    group_id: '500123'
+                    product_type: example_value
+                    ineligibility_reason: example_value
+        '400':
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                verifyEligibility400Example:
+                  summary: Default verifyEligibility 400 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                verifyEligibility401Example:
+                  summary: Default verifyEligibility 401 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    EligibilityResponse:
+      type: object
+      description: Result of an eligibility verification check.
+      properties:
+        eligible:
+          type: boolean
+          description: Whether the employee is eligible for the product.
+          example: true
+        employee_id:
+          type: string
+          description: Verified employee identifier.
+          example: EMP-789012
+        group_id:
+          type: string
+          description: Employer group identifier.
+          example: GRP-123456
+        product_type:
+          type: string
+          description: Product type checked.
+          example: accident
+        ineligibility_reason:
+          type: string
+          description: Reason for ineligibility if not eligible.
+          example: Employee not in an eligible employment class.
+    EligibilityRequest:
+      type: object
+      description: Request payload for eligibility verification.
+      required:
+      - employee_id
+      - group_id
+      - product_type
+      properties:
+        employee_id:
+          type: string
+          description: Employee identifier to verify.
+          example: EMP-789012
+        group_id:
+          type: string
+          description: Employer group identifier.
+          example: GRP-123456
+        product_type:
+          type: string
+          description: Supplemental insurance product to check eligibility for.
+          example: accident
+    Error:
+      type: object
+      description: API error response.
+      properties:
+        error:
+          type: string
+          description: Error code.
+          example: not_found
+        message:
+          type: string
+          description: Human-readable error description.
+          example: The requested resource was not found.
+        request_id:
+          type: string
+          description: Unique request ID for support reference.
+          example: req-a1b2c3d4e5
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 client credentials flow for server-to-server API access.
+      flows:
+        clientCredentials:
+          tokenUrl: https://auth.enterprise-connect.aflac.com/oauth/token
+          scopes:
+            enrollment:read: Read enrollment records
+            enrollment:write: Create and update enrollments
+            claims:read: Read claim records
+            claims:write: Submit claims
+            eligibility:read: Verify eligibility
+            groups:read: Read group records

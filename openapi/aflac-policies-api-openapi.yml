@@ -1,0 +1,230 @@
+openapi: 3.0.3
+info:
+  title: Aflac Enterprise Connect Claims Policies API
+  description: The Aflac Enterprise Connect (AEC) API enables benefits administrators, HR platforms, and third-party enrollment systems to integrate with Aflac's supplemental insurance platform. It provides REST API access to benefits enrollment, policy management, claims status, and eligibility verification for group and individual supplemental insurance products.
+  version: '1.0'
+  contact:
+    name: Aflac Enterprise Connect Support
+    url: https://docs.enterprise-connect.aflac.com
+  x-generated-from: documentation
+servers:
+- url: https://api.enterprise-connect.aflac.com/v1
+  description: Production Server
+- url: https://sandbox.enterprise-connect.aflac.com/v1
+  description: Sandbox Server
+security:
+- oauth2: []
+tags:
+- name: Policies
+  description: Policy management and retrieval operations.
+paths:
+  /policies:
+    get:
+      operationId: listPolicies
+      summary: Aflac List Policies
+      description: Retrieve a list of supplemental insurance policies for a group or employee.
+      tags:
+      - Policies
+      parameters:
+      - name: group_id
+        in: query
+        description: Filter by employer group ID.
+        schema:
+          type: string
+        example: GRP-123456
+      - name: employee_id
+        in: query
+        description: Filter by employee ID.
+        schema:
+          type: string
+        example: EMP-789012
+      - name: product_type
+        in: query
+        description: Filter by supplemental insurance product type.
+        schema:
+          type: string
+          enum:
+          - accident
+          - critical_illness
+          - cancer
+          - hospital_indemnity
+          - disability
+          - life
+        example: accident
+      responses:
+        '200':
+          description: A list of policies.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyList'
+              examples:
+                listPolicies200Example:
+                  summary: Default listPolicies 200 response
+                  x-microcks-default: true
+                  value:
+                    items:
+                    - {}
+                    total: 1
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                listPolicies401Example:
+                  summary: Default listPolicies 401 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /policies/{policy_id}:
+    get:
+      operationId: getPolicy
+      summary: Aflac Get Policy
+      description: Retrieve a specific supplemental insurance policy by ID.
+      tags:
+      - Policies
+      parameters:
+      - name: policy_id
+        in: path
+        required: true
+        description: Unique policy identifier.
+        schema:
+          type: string
+        example: POL-987654
+      responses:
+        '200':
+          description: Policy details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Policy'
+              examples:
+                getPolicy200Example:
+                  summary: Default getPolicy 200 response
+                  x-microcks-default: true
+                  value:
+                    policy_id: '500123'
+                    enrollment_id: '500123'
+                    employee_id: '500123'
+                    group_id: '500123'
+                    product_type: example_value
+                    status: active
+                    face_value: 99.99
+                    monthly_premium: 99.99
+                    effective_date: '2025-03-15'
+        '404':
+          description: Policy not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                getPolicy404Example:
+                  summary: Default getPolicy 404 response
+                  x-microcks-default: true
+                  value:
+                    error: example_value
+                    message: example_value
+                    request_id: '500123'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    Policy:
+      type: object
+      description: A supplemental insurance policy record.
+      properties:
+        policy_id:
+          type: string
+          description: Unique policy identifier.
+          example: POL-987654
+        enrollment_id:
+          type: string
+          description: Associated enrollment identifier.
+          example: ENR-500123
+        employee_id:
+          type: string
+          description: Policyholder employee identifier.
+          example: EMP-789012
+        group_id:
+          type: string
+          description: Employer group identifier.
+          example: GRP-123456
+        product_type:
+          type: string
+          description: Type of supplemental insurance product.
+          example: accident
+        status:
+          type: string
+          description: Policy status.
+          enum:
+          - active
+          - lapsed
+          - terminated
+          example: active
+        face_value:
+          type: number
+          description: Coverage face value amount in USD.
+          example: 50000
+        monthly_premium:
+          type: number
+          description: Monthly premium amount in USD.
+          example: 18.5
+        effective_date:
+          type: string
+          format: date
+          description: Policy effective date.
+          example: '2025-01-01'
+    PolicyList:
+      type: object
+      description: Paginated list of policies.
+      properties:
+        items:
+          type: array
+          description: Array of policy records.
+          items:
+            $ref: '#/components/schemas/Policy'
+          example:
+          - example_value
+        total:
+          type: integer
+          description: Total number of matching policies.
+          example: 75
+    Error:
+      type: object
+      description: API error response.
+      properties:
+        error:
+          type: string
+          description: Error code.
+          example: not_found
+        message:
+          type: string
+          description: Human-readable error description.
+          example: The requested resource was not found.
+        request_id:
+          type: string
+          description: Unique request ID for support reference.
+          example: req-a1b2c3d4e5
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 client credentials flow for server-to-server API access.
+      flows:
+        clientCredentials:
+          tokenUrl: https://auth.enterprise-connect.aflac.com/oauth/token
+          scopes:
+            enrollment:read: Read enrollment records
+            enrollment:write: Create and update enrollments
+            claims:read: Read claim records
+            claims:write: Submit claims
+            eligibility:read: Verify eligibility
+            groups:read: Read group records
