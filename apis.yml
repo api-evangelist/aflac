@@ -1,53 +1,112 @@
 aid: aflac
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/aflac.png
 tags:
   - Fortune 500
 url: https://raw.githubusercontent.com/api-evangelist/aflac/refs/heads/main/apis.yml
 modified: '2026-04-19'
 apis:
-  - aid: aflac:enterprise-connect-api
-    name: Aflac Enterprise Connect API
-    tags:
-      - Benefits
-      - Enrollment
-      - Insurance
-      - Supplemental Insurance
-      - Workforce
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://api.enterprise-connect.aflac.com
-    humanURL: https://docs.enterprise-connect.aflac.com
-    properties:
-      - url: https://docs.enterprise-connect.aflac.com
-        type: Documentation
-      - url: https://docs.enterprise-connect.aflac.com/docs/getting-started
-        type: GettingStarted
-      - type: OpenAPI
-        url: openapi/aflac-enterprise-connect-openapi.yml
-    description: >-
-      The Aflac Enterprise Connect (AEC) API enables benefits administrators, HR platforms, and third-party enrollment
-      systems to integrate with Aflac's supplemental insurance platform programmatically. It provides REST API access to
-      benefits enrollment, policy management, claims status, and eligibility verification for group and individual
-      supplemental insurance products. The API supports electronic benefits enrollment workflows replacing traditional
-      EDI 834 file exchanges, enabling real-time enrollment confirmation and policy administration for employers and
-      their benefits technology partners.
-  - aid: aflac:claims-api
-    name: Aflac Claims API
-    tags:
-      - Claims
-      - Insurance
-      - Payments
-      - Supplemental Insurance
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://api.enterprise-connect.aflac.com
-    humanURL: https://docs.enterprise-connect.aflac.com
-    properties:
-      - url: https://docs.enterprise-connect.aflac.com
-        type: Documentation
-    description: >-
-      The Aflac Claims API provides programmatic access to supplemental insurance claim submission, status retrieval,
-      and benefit payment tracking. It enables policyholders and administrators to submit claims digitally, track claim
-      processing status, and receive benefit payment notifications. The API supports claims for Aflac's portfolio of
-      supplemental products including accident, critical illness, cancer, hospital indemnity, and short-term disability
-      insurance.
+- aid: aflac:claims-api
+  name: Aflac Claims API
+  tags:
+  - Claims
+  - Insurance
+  - Payments
+  - Supplemental Insurance
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  baseURL: https://api.enterprise-connect.aflac.com
+  humanURL: https://docs.enterprise-connect.aflac.com
+  properties:
+  - url: https://docs.enterprise-connect.aflac.com
+    type: Documentation
+  description: >-
+    The Aflac Claims API provides programmatic access to supplemental insurance claim submission, status
+    retrieval, and benefit payment tracking. It enables policyholders and administrators to submit claims
+    digitally, track claim processing status, and receive benefit payment notifications. The API supports
+    claims for Aflac's portfolio of supplemental products including accident, critical illness, cancer,
+    hospital indemnity, and short-term disability insurance.
+- aid: aflac:aflac-claims-api
+  name: aflac Claims API
+  description: Claims submission and status retrieval operations.
+  humanURL: https://docs.enterprise-connect.aflac.com
+  baseURL: https://api.enterprise-connect.aflac.com
+  tags:
+  - Claims
+  properties:
+  - type: OpenAPI
+    url: openapi/aflac-claims-api-openapi.yml
+  - type: Documentation
+    url: https://docs.enterprise-connect.aflac.com
+  - type: GettingStarted
+    url: https://docs.enterprise-connect.aflac.com/docs/getting-started
+- aid: aflac:aflac-eligibility-api
+  name: aflac Eligibility API
+  description: Employee eligibility verification operations.
+  humanURL: https://docs.enterprise-connect.aflac.com
+  baseURL: https://api.enterprise-connect.aflac.com
+  tags:
+  - Eligibility
+  properties:
+  - type: OpenAPI
+    url: openapi/aflac-eligibility-api-openapi.yml
+  - type: Documentation
+    url: https://docs.enterprise-connect.aflac.com
+  - type: GettingStarted
+    url: https://docs.enterprise-connect.aflac.com/docs/getting-started
+- aid: aflac:aflac-enrollment-api
+  name: aflac Enrollment API
+  description: Benefits enrollment operations for supplemental insurance products.
+  humanURL: https://docs.enterprise-connect.aflac.com
+  baseURL: https://api.enterprise-connect.aflac.com
+  tags:
+  - Enrollment
+  properties:
+  - type: OpenAPI
+    url: openapi/aflac-enrollment-api-openapi.yml
+  - type: Documentation
+    url: https://docs.enterprise-connect.aflac.com
+  - type: GettingStarted
+    url: https://docs.enterprise-connect.aflac.com/docs/getting-started
+- aid: aflac:aflac-groups-api
+  name: aflac Groups API
+  description: Employer group management operations.
+  humanURL: https://docs.enterprise-connect.aflac.com
+  baseURL: https://api.enterprise-connect.aflac.com
+  tags:
+  - Groups
+  properties:
+  - type: OpenAPI
+    url: openapi/aflac-groups-api-openapi.yml
+  - type: Documentation
+    url: https://docs.enterprise-connect.aflac.com
+  - type: GettingStarted
+    url: https://docs.enterprise-connect.aflac.com/docs/getting-started
+- aid: aflac:aflac-policies-api
+  name: aflac Policies API
+  description: Policy management and retrieval operations.
+  humanURL: https://docs.enterprise-connect.aflac.com
+  baseURL: https://api.enterprise-connect.aflac.com
+  tags:
+  - Policies
+  properties:
+  - type: OpenAPI
+    url: openapi/aflac-policies-api-openapi.yml
+  - type: Documentation
+    url: https://docs.enterprise-connect.aflac.com
+  - type: GettingStarted
+    url: https://docs.enterprise-connect.aflac.com/docs/getting-started
 common:
   - type: AgenticAccess
     url: agentic-access/aflac-agentic-access.yml
