@@ -1,0 +1,22 @@
+{
+  "provider": "aflac",
+  "sources": [
+    "aflac-claims-api-openapi.yml",
+    "aflac-eligibility-api-openapi.yml",
+    "aflac-enrollment-api-openapi.yml",
+    "aflac-groups-api-openapi.yml",
+    "aflac-policies-api-openapi.yml"
+  ],
+  "outputs": [
+    "aflac-claims-api-openapi.yml",
+    "aflac-eligibility-api-openapi.yml",
+    "aflac-enrollment-api-openapi.yml",
+    "aflac-groups-api-openapi.yml",
+    "aflac-policies-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
