@@ -189,7 +189,7 @@ common:
       - name: bswift
         description: Benefits administration platform integration for Aflac group enrollment.
   - type: OpenAPI
-    url: openapi/aflac-enterprise-connect-openapi.yml
+    url: openapi/_original/aflac-enterprise-connect-openapi.yml
   - type: JSONSchema
     url: json-schema/enterprise-connect-claim-list-schema.json
   - type: JSONSchema
