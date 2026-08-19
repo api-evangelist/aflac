@@ -1,0 +1,79 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Aflac Enterprise Connect Claims Policies API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://auth.enterprise-connect.aflac.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Policies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Aflac List Policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.enterprise-connect.aflac.com/v1/policies",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "GRP-123456",
+                "type": "query",
+                "description": "Filter by employer group ID."
+              },
+              {
+                "name": "employee_id",
+                "value": "EMP-789012",
+                "type": "query",
+                "description": "Filter by employee ID."
+              },
+              {
+                "name": "product_type",
+                "value": "accident",
+                "type": "query",
+                "description": "Filter by supplemental insurance product type."
+              }
+            ]
+          },
+          "docs": "Retrieve a list of supplemental insurance policies for a group or employee."
+        },
+        {
+          "info": {
+            "name": "Aflac Get Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.enterprise-connect.aflac.com/v1/policies/:policy_id",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "POL-987654",
+                "type": "path",
+                "description": "Unique policy identifier."
+              }
+            ]
+          },
+          "docs": "Retrieve a specific supplemental insurance policy by ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
