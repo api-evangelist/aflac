@@ -86,6 +86,8 @@ apis:
   humanURL: https://docs.enterprise-connect.aflac.com
   baseURL: https://api.enterprise-connect.aflac.com
   tags:
+  - Group
+  tags_raw:
   - Groups
   properties:
   - type: OpenAPI
