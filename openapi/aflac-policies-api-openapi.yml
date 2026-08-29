@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Aflac Enterprise Connect Claims Policies API
   description: The Aflac Enterprise Connect (AEC) API enables benefits administrators, HR platforms, and third-party enrollment systems to integrate with Aflac's supplemental insurance platform. It provides REST API access to benefits enrollment, policy management, claims status, and eligibility verification for group and individual supplemental insurance products.
@@ -138,6 +138,22 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    Error:
+      type: object
+      description: API error response.
+      properties:
+        error:
+          type: string
+          description: Error code.
+          example: not_found
+        message:
+          type: string
+          description: Human-readable error description.
+          example: The requested resource was not found.
+        request_id:
+          type: string
+          description: Unique request ID for support reference.
+          example: req-a1b2c3d4e5
     Policy:
       type: object
       description: A supplemental insurance policy record.
@@ -198,22 +214,6 @@ components:
           type: integer
           description: Total number of matching policies.
           example: 75
-    Error:
-      type: object
-      description: API error response.
-      properties:
-        error:
-          type: string
-          description: Error code.
-          example: not_found
-        message:
-          type: string
-          description: Human-readable error description.
-          example: The requested resource was not found.
-        request_id:
-          type: string
-          description: Unique request ID for support reference.
-          example: req-a1b2c3d4e5
   securitySchemes:
     oauth2:
       type: oauth2

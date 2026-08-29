@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Aflac Enterprise Connect Claims API
   description: The Aflac Enterprise Connect (AEC) API enables benefits administrators, HR platforms, and third-party enrollment systems to integrate with Aflac's supplemental insurance platform. It provides REST API access to benefits enrollment, policy management, claims status, and eligibility verification for group and individual supplemental insurance products.
@@ -197,52 +197,6 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    ClaimList:
-      type: object
-      description: Paginated list of claims.
-      properties:
-        items:
-          type: array
-          description: Array of claim records.
-          items:
-            $ref: '#/components/schemas/Claim'
-          example:
-          - example_value
-        total:
-          type: integer
-          description: Total number of matching claims.
-          example: 30
-    ClaimRequest:
-      type: object
-      description: Request payload for submitting a new claim.
-      required:
-      - policy_id
-      - claim_type
-      - incident_date
-      properties:
-        policy_id:
-          type: string
-          description: Policy against which to file the claim.
-          example: POL-987654
-        claim_type:
-          type: string
-          description: Type of claim event.
-          enum:
-          - accident
-          - critical_illness
-          - cancer_diagnosis
-          - hospitalization
-          - disability
-          example: accident
-        incident_date:
-          type: string
-          format: date
-          description: Date of the qualifying event.
-          example: '2025-02-10'
-        description:
-          type: string
-          description: Description of the incident or diagnosis.
-          example: Employee sustained a broken arm in a workplace accident.
     Error:
       type: object
       description: API error response.
@@ -259,6 +213,21 @@ components:
           type: string
           description: Unique request ID for support reference.
           example: req-a1b2c3d4e5
+    ClaimList:
+      type: object
+      description: Paginated list of claims.
+      properties:
+        items:
+          type: array
+          description: Array of claim records.
+          items:
+            $ref: '#/components/schemas/Claim'
+          example:
+          - example_value
+        total:
+          type: integer
+          description: Total number of matching claims.
+          example: 30
     Claim:
       type: object
       description: A supplemental insurance claim record.
@@ -313,6 +282,37 @@ components:
           type: string
           description: Reason for denial if the claim was denied.
           example: Condition not covered under policy terms.
+    ClaimRequest:
+      type: object
+      description: Request payload for submitting a new claim.
+      required:
+      - policy_id
+      - claim_type
+      - incident_date
+      properties:
+        policy_id:
+          type: string
+          description: Policy against which to file the claim.
+          example: POL-987654
+        claim_type:
+          type: string
+          description: Type of claim event.
+          enum:
+          - accident
+          - critical_illness
+          - cancer_diagnosis
+          - hospitalization
+          - disability
+          example: accident
+        incident_date:
+          type: string
+          format: date
+          description: Date of the qualifying event.
+          example: '2025-02-10'
+        description:
+          type: string
+          description: Description of the incident or diagnosis.
+          example: Employee sustained a broken arm in a workplace accident.
   securitySchemes:
     oauth2:
       type: oauth2

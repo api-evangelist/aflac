@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Aflac Enterprise Connect Claims Groups API
   description: The Aflac Enterprise Connect (AEC) API enables benefits administrators, HR platforms, and third-party enrollment systems to integrate with Aflac's supplemental insurance platform. It provides REST API access to benefits enrollment, policy management, claims status, and eligibility verification for group and individual supplemental insurance products.
@@ -122,6 +122,37 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    GroupList:
+      type: object
+      description: Paginated list of employer groups.
+      properties:
+        items:
+          type: array
+          description: Array of group records.
+          items:
+            $ref: '#/components/schemas/Group'
+          example:
+          - example_value
+        total:
+          type: integer
+          description: Total number of groups.
+          example: 10
+    Error:
+      type: object
+      description: API error response.
+      properties:
+        error:
+          type: string
+          description: Error code.
+          example: not_found
+        message:
+          type: string
+          description: Human-readable error description.
+          example: The requested resource was not found.
+        request_id:
+          type: string
+          description: Unique request ID for support reference.
+          example: req-a1b2c3d4e5
     Group:
       type: object
       description: An employer group record.
@@ -154,37 +185,6 @@ components:
           format: date
           description: Group effective date.
           example: '2025-01-01'
-    GroupList:
-      type: object
-      description: Paginated list of employer groups.
-      properties:
-        items:
-          type: array
-          description: Array of group records.
-          items:
-            $ref: '#/components/schemas/Group'
-          example:
-          - example_value
-        total:
-          type: integer
-          description: Total number of groups.
-          example: 10
-    Error:
-      type: object
-      description: API error response.
-      properties:
-        error:
-          type: string
-          description: Error code.
-          example: not_found
-        message:
-          type: string
-          description: Human-readable error description.
-          example: The requested resource was not found.
-        request_id:
-          type: string
-          description: Unique request ID for support reference.
-          example: req-a1b2c3d4e5
   securitySchemes:
     oauth2:
       type: oauth2
