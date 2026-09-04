@@ -1,0 +1,82 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  Aflac Enterprise Connect developer portal, https://docs.enterprise-connect.aflac.com —
+  /docs/developer-guide/how-to-guides/how-to-make-a-request-using-swagger (Developer Portal in Dev
+  and Syst), /docs/developer-guide/how-to-guides/how-to-check-the-health-endpoint-of-your-service,
+  /docs/platform-overview/approach-to-test-automation,
+  /docs/developer-guide/app-team-controls/test-automation, and the environment host mapping
+  compiled into the portal bundle main-NLQXKZXX.js. Read 2026-09-04.
+docs: https://docs.enterprise-connect.aflac.com/docs/developer-guide/how-to-guides/how-to-make-a-request-using-swagger
+provider: aflac
+public_sandbox: false
+summary: >-
+  AEC runs a full three-environment estate — dev, syst and prod — each with its own API gateway host
+  AND its own complete copy of the developer portal. That is a genuine non-production surface, and
+  Aflac documents it openly. It is not a public sandbox: access requires an Aflac identity, and a
+  test client_id/client_secret is issued through an internal ServiceNow request. No public test
+  credentials, test cards, fixtures or simulated data are published, and none are invented here.
+
+environments:
+- env: dev
+  api_host: https://enterprise-connect.aflacdev.com
+  portal: https://docs.enterprise-connect.aflacdev.com/
+  probe:
+    url: https://enterprise-connect.aflacdev.com/
+    status: 403
+    body: '{"message":"Forbidden"}'
+- env: syst
+  api_host: https://enterprise-connect.aflacqa.com
+  portal: https://docs.enterprise-connect.aflacqa.com/
+  probe:
+    url: https://enterprise-connect.aflacqa.com/
+    status: 403
+    body: '{"message":"Forbidden"}'
+- env: prod
+  api_host: https://enterprise-connect.aflac.com
+  portal: https://docs.enterprise-connect.aflac.com/
+  probe:
+    url: https://enterprise-connect.aflac.com/
+    status: 403
+    body: '{"message":"Forbidden"}'
+
+access:
+  identity: >-
+    "In order to log in to these environments your username will be the start of your email address
+    followed by @aflacdev.com or @aflacqa.com depending on which environment you are trying to
+    access. Your password will be the existing password you use to access this website." Example
+    given: rmurphy@aflac.com becomes rmurphy@aflacdev.com or rmurphy@aflacqa.com.
+  identity_provider: PingIdentity — a new PING profile may be required on first login to Dev or Syst.
+  credentials: >-
+    A client_id / client_secret for OAuth 2.0 client_credentials is requested through an internal
+    ServiceNow form. No public or self-serve issuance path exists.
+  test_keys_published: false
+  test_data_published: false
+
+try_it_console:
+  tool: Swagger UI, embedded in the Developer Portal per service
+  availability: >-
+    "This functionality is only available by default in Dev and Syst; in Prod CORS will need to have
+    been enabled for your service for this functionality to work, this is typically done for
+    Experience APIs."
+  auth_flow: >-
+    Obtain an OAuth 2.0 access token (the docs walk through Postman), click Authorize on the
+    service's Swagger page, and enter "Bearer " followed by the token.
+  response_formats: [application/json, application/xml]
+
+fixtures_and_simulators:
+- name: e-aec-test
+  type: simulator service
+  purpose: >-
+    A published platform simulator service used to exercise AEC behaviours. It is deliberately
+    configured with extremely low rate limits so throttling can be triggered in automated testing —
+    Aflac notes "it's unlikely you'd set this low a limit in production". A worked path
+    /v1/i-am-rate-limited is referenced against it.
+- name: Robot Framework automation folder
+  type: test tooling
+  purpose: >-
+    Every new Java service created in AEC ships with an automation folder where its Robot Framework
+    test automation lives; installation and configuration guides are published.
+
+time_simulation: not published
+test_clocks: not published

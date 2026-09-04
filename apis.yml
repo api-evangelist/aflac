@@ -1,3 +1,4 @@
+name: Aflac
 aid: aflac
 deliveryModel:
   model: saas
@@ -28,8 +29,16 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/aflac.png
 tags:
   - Fortune 500
+  - Insurance
+  - Supplemental Insurance
+  - Employee Benefits
+  - Claims
+  - Enrollment
+  - Policy Administration
+  - Enterprise Integration
 url: https://raw.githubusercontent.com/api-evangelist/aflac/refs/heads/main/apis.yml
-modified: '2026-04-19'
+created: '2026-04-19'
+modified: '2026-09-04'
 apis:
 - aid: aflac:claims-api
   name: Aflac Claims API
@@ -39,7 +48,7 @@ apis:
   - Payments
   - Supplemental Insurance
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  baseURL: https://api.enterprise-connect.aflac.com
+  baseURL: https://enterprise-connect.aflac.com
   humanURL: https://docs.enterprise-connect.aflac.com
   properties:
   - url: https://docs.enterprise-connect.aflac.com
@@ -51,10 +60,11 @@ apis:
     claims for Aflac's portfolio of supplemental products including accident, critical illness, cancer,
     hospital indemnity, and short-term disability insurance.
 - aid: aflac:aflac-claims-api
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   name: aflac Claims API
   description: Claims submission and status retrieval operations.
   humanURL: https://docs.enterprise-connect.aflac.com
-  baseURL: https://api.enterprise-connect.aflac.com
+  baseURL: https://enterprise-connect.aflac.com
   tags:
   - Claims
   properties:
@@ -63,12 +73,13 @@ apis:
   - type: Documentation
     url: https://docs.enterprise-connect.aflac.com
   - type: GettingStarted
-    url: https://docs.enterprise-connect.aflac.com/docs/getting-started
+    url: https://docs.enterprise-connect.aflac.com/docs/onboarding
 - aid: aflac:aflac-eligibility-api
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   name: aflac Eligibility API
   description: Employee eligibility verification operations.
   humanURL: https://docs.enterprise-connect.aflac.com
-  baseURL: https://api.enterprise-connect.aflac.com
+  baseURL: https://enterprise-connect.aflac.com
   tags:
   - Eligibility
   properties:
@@ -77,12 +88,13 @@ apis:
   - type: Documentation
     url: https://docs.enterprise-connect.aflac.com
   - type: GettingStarted
-    url: https://docs.enterprise-connect.aflac.com/docs/getting-started
+    url: https://docs.enterprise-connect.aflac.com/docs/onboarding
 - aid: aflac:aflac-enrollment-api
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   name: aflac Enrollment API
   description: Benefits enrollment operations for supplemental insurance products.
   humanURL: https://docs.enterprise-connect.aflac.com
-  baseURL: https://api.enterprise-connect.aflac.com
+  baseURL: https://enterprise-connect.aflac.com
   tags:
   - Enrollment
   properties:
@@ -91,12 +103,13 @@ apis:
   - type: Documentation
     url: https://docs.enterprise-connect.aflac.com
   - type: GettingStarted
-    url: https://docs.enterprise-connect.aflac.com/docs/getting-started
+    url: https://docs.enterprise-connect.aflac.com/docs/onboarding
 - aid: aflac:aflac-groups-api
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   name: aflac Groups API
   description: Employer group management operations.
   humanURL: https://docs.enterprise-connect.aflac.com
-  baseURL: https://api.enterprise-connect.aflac.com
+  baseURL: https://enterprise-connect.aflac.com
   tags:
   - Group
   tags_raw:
@@ -107,12 +120,13 @@ apis:
   - type: Documentation
     url: https://docs.enterprise-connect.aflac.com
   - type: GettingStarted
-    url: https://docs.enterprise-connect.aflac.com/docs/getting-started
+    url: https://docs.enterprise-connect.aflac.com/docs/onboarding
 - aid: aflac:aflac-policies-api
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   name: aflac Policies API
   description: Policy management and retrieval operations.
   humanURL: https://docs.enterprise-connect.aflac.com
-  baseURL: https://api.enterprise-connect.aflac.com
+  baseURL: https://enterprise-connect.aflac.com
   tags:
   - Policies
   properties:
@@ -121,7 +135,7 @@ apis:
   - type: Documentation
     url: https://docs.enterprise-connect.aflac.com
   - type: GettingStarted
-    url: https://docs.enterprise-connect.aflac.com/docs/getting-started
+    url: https://docs.enterprise-connect.aflac.com/docs/onboarding
 common:
   - type: AgenticAccess
     url: agentic-access/aflac-agentic-access.yml
@@ -204,7 +218,7 @@ common:
       - name: bswift
         description: Benefits administration platform integration for Aflac group enrollment.
   - type: OpenAPI
-    url: openapi/_original/aflac-enterprise-connect-openapi.yml
+    url: openapi/_ae-authored/aflac-enterprise-connect-openapi.yml
   - type: JSONSchema
     url: json-schema/enterprise-connect-claim-list-schema.json
   - type: JSONSchema
@@ -289,13 +303,45 @@ common:
     url: rules/aflac-spectral-rules.yml
   - type: Vocabulary
     url: vocabulary/aflac-vocabulary.yaml
-  - type: LlmsText
-    url: https://docs.enterprise-connect.aflac.com/llms.txt
+  - type: Conventions
+    url: conventions/aflac-conventions.yml
+  - type: ErrorCatalog
+    url: errors/aflac-problem-types.yml
+  - type: DataModel
+    url: data-model/aflac-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/aflac-lifecycle.yml
+  - type: Conformance
+    url: conformance/aflac-conformance.yml
+  - type: Packages
+    url: packages/aflac-packages.yml
+  - type: Sandbox
+    url: sandbox/aflac-sandbox.yml
+  - type: RateLimits
+    url: rate-limits/aflac-rate-limits.yml
+  - type: Plans
+    url: plans/aflac-plans-pricing.yml
+  - type: Documentation
+    url: https://docs.enterprise-connect.aflac.com/docs/index
+  - type: APIReference
+    url: https://docs.enterprise-connect.aflac.com/docs/developer-guide/app-team-controls/openapi-specification
+  - type: GettingStarted
+    url: https://docs.enterprise-connect.aflac.com/docs/onboarding
 description: >-
-  Aflac is America's leading provider of supplemental insurance, offering products that pay benefits when a policyholder
-  experiences an accident, illness, or injury. Aflac provides REST APIs through its Enterprise Connect (AEC) platform
-  enabling benefits technology companies, HR platforms, and benefits administrators to integrate supplemental insurance
-  enrollment, policy management, and claims capabilities into their workflows.
+  Aflac is America's leading provider of supplemental insurance, paying benefits when a policyholder has an accident,
+  illness, or injury. Aflac runs its own integration-API platform, Aflac Enterprise Connect (AEC), on AWS API Gateway in
+  front of Java and .NET services, and publishes the platform's design rules openly at docs.enterprise-connect.aflac.com:
+  a layered service taxonomy (experience, process, core, system, aspect), a strict resource-path grammar, a mandated
+  general-response envelope, a mandatory health endpoint on every API, and a complete enterprise canonical data model
+  (EDS v2020, roughly 90 canonicals across 20 libraries). The portal is written for Aflac application teams, not outside
+  partners: the service catalog, Swagger console and spec builder sit behind a PingIdentity login, OAuth 2.0
+  client-credentials is the only supported authentication, and credentials are issued by internal request. The design
+  documentation is public; the contracts and endpoints are not.
 maintainers:
   - FN: Kin Lane
     email: info@apievangelist.com
+x-enrichment:
+  date: '2026-09-04'
+  status: enriched
+  artifacts_added: 9
+  pass: local-v3

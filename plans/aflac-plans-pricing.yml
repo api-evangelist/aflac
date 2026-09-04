@@ -9,6 +9,14 @@ created: '2026-05-04'
 method: generated
 modified: '2026-05-05'
 reconciled: false
+plan_count: 2
+docs_checked: >-
+  Re-checked 2026-09-04 against the Aflac Enterprise Connect developer portal
+  (https://docs.enterprise-connect.aflac.com, 7,160 indexed content sections): the portal carries a
+  "Cost Management" architecture page about AWS spend, but publishes NO API pricing, no tiers, no
+  quotas priced per call, and no commercial terms of any kind. AEC is an internal platform, so
+  there is nothing for an outside buyer to price. The two entries below remain the honest reading:
+  integration terms are set by partner contract, and consumer premiums are state-filed.
 notes: Aflac is a supplemental insurance carrier. It does not publish a public developer API or
   per-call pricing; broker/employer integrations and consumer policies are sold through licensed
   channels with state-filed rates.

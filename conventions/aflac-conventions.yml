@@ -1,0 +1,350 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  Aflac Enterprise Connect (AEC) developer portal, https://docs.enterprise-connect.aflac.com —
+  publicly readable, no credentials. Pages read: /docs/platform-overview/architecture/endpoint-naming-rules,
+  /docs/platform-overview/architecture/service-naming-conventions,
+  /docs/platform-overview/architecture/three-layer-architecture-deep-dive,
+  /docs/developer-guide/app-team-controls/openapi-specification,
+  /docs/developer-guide/app-team-controls/rate-limiting-aka-throttling,
+  /docs/developer-guide/how-to-guides/how-to-make-a-request-to-aec-using-postman,
+  /docs/developer-guide/how-to-guides/how-to-make-a-request-using-swagger,
+  /docs/developer-guide/how-to-guides/how-to-check-the-health-endpoint-of-your-service,
+  /docs/developer-guide/enterprise-data-structures/v2020/support-libraries/api-specific/*.
+  The portal is an Angular SPA; its content is served as a single public index at
+  /assets/ng-doc/indexes.json (HTTP 200, application/json, 3,007,250 bytes, fetched 2026-09-04),
+  which is where these rules were read from verbatim.
+docs: https://docs.enterprise-connect.aflac.com/docs/platform-overview/architecture/endpoint-naming-rules
+provider: aflac
+summary: >-
+  AEC (Aflac Enterprise Connect) is Aflac's own integration-API platform, running on AWS API Gateway
+  in front of Java/Spring and .NET services. Aflac publishes the platform's API design rules openly
+  even though the runtime endpoints themselves are OAuth-gated. These conventions are Aflac's, stated
+  by Aflac, and they are unusually complete: a layered service taxonomy, a hard resource-path grammar,
+  a mandated response envelope, and a mandated health endpoint on every API.
+
+audience: >-
+  The portal is written for Aflac application teams building services INSIDE AEC. It is not a
+  partner/public API catalog. The Swagger try-it console, the service catalog and the API spec
+  builder all sit behind a PingIdentity login, and a client_id is obtained through an internal
+  ServiceNow request.
+
+authentication:
+  style: oauth2
+  grant: client_credentials
+  header: Authorization
+  prefix: Bearer
+  client_authentication: HTTP Basic (client_id/client_secret sent as a Basic auth header)
+  alternatives: none
+  quote: >-
+    "How can I make requests to AEC without using OAuth 2.0? Put simply - you cannot. OAuth 2.0 is
+    the only supported method for authenticating requests to AEC."
+  identity_provider: PingIdentity ("oAuth / Ping Client Credential Request")
+  credential_issuance: internal ServiceNow request to the Security team
+  token_endpoint: >-
+    Not published anonymously. The Postman guide links an internal "Access Token URLs" page that
+    the public documentation index does not carry.
+  see: authentication/aflac-authentication.yml
+
+base_url:
+  pattern: https://enterprise-connect.{env-domain}/{service-name}/{version}
+  environments:
+  - env: prod
+    host: enterprise-connect.aflac.com
+    portal: https://docs.enterprise-connect.aflac.com/
+  - env: syst
+    host: enterprise-connect.aflacqa.com
+    portal: https://docs.enterprise-connect.aflacqa.com/
+  - env: dev
+    host: enterprise-connect.aflacdev.com
+    portal: https://docs.enterprise-connect.aflacdev.com/
+  worked_example: https://enterprise-connect.aflacdev.com/e-csh-policy-holder-1/v1/health
+  evidence: >-
+    The host-per-environment mapping is compiled into the portal's own bundle
+    (main-NLQXKZXX.js, getPostmanProperties: aflacdev / aflacqa / aflac ->
+    `https://enterprise-connect.${s}.com/${name}/v1`), and the worked example is published in
+    /docs/developer-guide/how-to-guides/how-to-check-the-health-endpoint-of-your-service.
+  probe:
+    url: https://enterprise-connect.aflac.com/
+    status: 403
+    body: '{"message":"Forbidden"}'
+    note: Live AWS API Gateway; every anonymous request is refused, which is the expected posture.
+
+service_naming:
+  rule: Every service name starts with a layer prefix and must pass architect approval before deploy.
+  prefixes:
+  - prefix: e-
+    layer: Experience
+    formula: e-{consumer application | capability}
+    purpose: Consumer-facing APIs tailored to a specific application or capability.
+    examples: [e-datacap, e-insured-mobile, e-enrollment-selector, e-account-proposal]
+  - prefix: p-
+    layer: Process
+    formula: 'p-{entity}-management | p-{entity}-operations{n} | p-{entity}-{business-process}'
+    purpose: Reusable business logic, orchestration and entity operations.
+    examples: [p-insured-management, p-claim-operations, p-claim-grouping-triage]
+  - prefix: c-
+    layer: Process (Core)
+    formula: c-{entity}
+    purpose: One building-block API per business entity; isolates callers from System APIs.
+    examples: [c-insured, c-claim, c-insurance-agreement]
+  - prefix: s-
+    layer: System
+    formula: s-{entity}-{system}
+    purpose: Fronts a specific system of record for one entity.
+    examples: [s-insured-policy-master-record, s-claim-sot, s-account-group-master]
+  - prefix: a-
+    layer: Aspect (cross-cutting, not a layer)
+    formula: a-{functionality}
+    purpose: Reusable technical utilities available to every layer.
+    examples: [a-identity, a-cipher, a-authorization, a-translation, a-log, a-file]
+  hard_rules:
+  - Must start with a valid prefix (e-, p-, c-, s-, a-).
+  - Must not end with -service.
+  - Must not end with -v1 or -1; version 1 is implicit.
+  - May end with -2, -3 only when a prior version already exists.
+  - Process APIs must carry an EDS entity name as the first segment after the prefix.
+  - System APIs must carry both the entity name and the data-source name.
+  - Must not use a vendor, platform or technology name (no e-sitecore, no e-salesforce).
+  - operations2 / operations3 are partition indexes, NOT versions.
+
+resource_paths:
+  formula: /{collection}/{item-id}
+  collection: plural noun, kebab-case, lowercase, static
+  item: URI parameter, singular form with an -id suffix, e.g. /accounts/{account-id}
+  rules:
+  - Lowercase only — /insurance-agreements, never /InsuranceAgreements.
+  - Kebab-case for multi-word — never snake_case.
+  - Nouns only, no verbs — /accounts, never /getAccounts.
+  - Plural at collection level, URI parameter at item level.
+  - Never place a static and a dynamic path segment at the same level (an item id of "status"
+    would make GET /accounts/A/status ambiguous); nest under a named sub-collection instead.
+  - Deeper nesting (/{collection}/{item-id}/{sub-collection}/{sub-item}) is allowed in Experience
+    APIs only.
+  - The entity name used for a collection must exist in EDS 2026; otherwise raise it with IC4E.
+  - Prefer /{collection}/{item-id}/{attribute} over hard-coded path values.
+  size_guidance: >-
+    Keep operation count below 20 per API; split an oversized experience API by business entity
+    (e-agent-hub -> e-agent-hub-account, e-agent-hub-insured, e-agent-hub-insurance-agreement).
+
+http_verbs:
+- verb: POST
+  purpose: Create a new resource
+  collection_level: true
+  item_level: false
+- verb: POST
+  purpose: Execute an action on resource(s)
+  collection_level: true
+  item_level: true
+  action_pattern: 'POST /{collection}/actions/{action-name} or POST /{collection}/{item-id}/actions/{action-name}'
+  action_example: POST /insureds/{insured-id}/actions/updateHurricaneImpactStatus
+- verb: GET
+  purpose: Search a collection / read a specific resource
+  collection_level: true
+  item_level: true
+- verb: PUT
+  purpose: Fully replace a resource — the client must send all fields
+  collection_level: false
+  item_level: true
+- verb: PATCH
+  purpose: Partially update — only the fields in the body are modified
+  collection_level: true
+  item_level: true
+- verb: DELETE
+  purpose: Delete resource(s)
+  collection_level: true
+  item_level: true
+
+query_parameters:
+  naming: kebab-case (available-states, not availableStates)
+  multi_value: plural parameter name, comma-separated (available-states=GA,TN,FL)
+  single_value: singular parameter name (available-state=GA)
+  scope_rule: >-
+    Query parameters apply to the LAST resource in the path. GET /accounts?account-ids=1,2,3&filter=status
+    is correct; GET /accounts/status?account-ids=1,2,3 is not, because account-ids would bind to
+    the status sub-resource.
+
+error_envelope:
+  style: custom-envelope
+  rfc9457: false
+  wrapper: general-response
+  shape:
+    metadata:
+      status: enumerated string — success | failure | partial
+      code: integer HTTP status, from the Spring Framework HttpStatus enum
+      descriptions: array of application-service-message
+      pagination-info: optional, only on collection responses
+    data: generic payload (T) — a single EDS object or a collection
+  message_shape:
+    context: the service or component that generated the message
+    type: info | warning | error
+    code: short application-specific code
+    short-description: brief human-readable label
+    long-description: detailed explanation
+  note: >-
+    Every AEC Integration API response is wrapped in general-response, so a non-2xx HTTP status is
+    ALWAYS accompanied by a machine-readable metadata.descriptions[] list. This is Aflac's own
+    envelope, defined in GeneralResponse.java / Metadata.java / ApplicationServiceMessage.java in
+    the eib-core-library. It is not RFC 9457 problem+json.
+  see: errors/aflac-problem-types.yml
+
+pagination:
+  style: page-number
+  location: metadata.pagination-info on the response
+  response_fields:
+  - field: page-number
+    type: integer
+  - field: page-size
+    type: integer
+  - field: total-item-count
+    type: integer (optional)
+  - field: has-more-pages
+    type: boolean (optional)
+  - field: last-item-id
+    type: string (optional)
+  request_params: >-
+    Not published. The portal documents the response shape but does not name the request-side
+    paging parameters anonymously.
+  note: >-
+    pagination-info is omitted entirely on responses that do not return a collection.
+
+versioning:
+  scheme: path
+  in_path: 'Every path begins with the version segment from the controller: /v1/health, /v2/policy'
+  spec_field: 'info.version must be a bare integer in single quotes (most services: ''1'')'
+  application_identity: >-
+    An AEC application is identified by info.title + info.version — e-foo with version 1 becomes
+    the application e-foo-1, and that is how the HTTP path to the service is formed.
+  major_version: >-
+    A new major version is a NEW service (e-foo-2 alongside e-foo-1); the old one keeps running for
+    consumers that have not migrated. Path versioning resets for each new service version — e-aec-2
+    still serves /v1/ paths.
+  see: lifecycle/aflac-lifecycle.yml
+
+health_check:
+  required: true
+  path: /{version}/health
+  example: https://enterprise-connect.aflacdev.com/e-csh-policy-holder-1/v1/health
+  behaviour: >-
+    Mandatory on every integration API and must appear in the API specification. The gateway calls
+    the service's health controller and appends its own status; if the service is down the caller
+    gets HTTP 500 explaining that the service is down but the API gateway is up.
+
+contract_governance:
+  spec_format: OpenAPI
+  mandatory: >-
+    The OpenAPI spec IS the deployment contract — AWS API Gateway is configured from it. Every
+    endpoint, query parameter, header and path variable must be declared case-sensitively or it is
+    not routed. The Authorization header must be declared explicitly.
+  approval: >-
+    An IC4E architect must approve the spec before the first deploy to DEV, SYST or PROD, against a
+    published self-review checklist.
+  constraint: >-
+    AWS API Gateway rejects unreferenced components — any schema or response in components/ with no
+    $ref pointing at it fails CI.
+  pipeline_step: transform-open-api-spec
+
+data_contract:
+  standard: EDS (Enterprise Data Structures) v2020
+  rule: >-
+    Request and response payloads between the Experience, Process and System layers must conform to
+    EDS. Its purpose is standardised domains, attribute naming and inter-domain relationships.
+  exception_process: >-
+    EDS changes are owned by the IC4E team; a documented exception process exists for work that
+    cannot wait for an EDS change.
+  see: data-model/aflac-data-model.yml
+
+rate_limit_signaling:
+  mechanism: AWS API Gateway throttles and quotas, applied at the gateway stage
+  configured_in: apispec/aws/config.yaml (per path + HTTP method)
+  default: >-
+    Rate limiting is enabled on ALL paths and methods; a sensible default is applied from the
+    application's layer (aspect / process / system / experience / core) when no explicit
+    burstLimit or rateLimit is set.
+  guarantee: >-
+    Aflac states throttles and quotas are "applied on a best-effort basis and should be thought of
+    as targets rather than guaranteed request ceilings".
+  response_headers: not published
+  exhaustion_status: not published
+  see: rate-limits/aflac-rate-limits.yml
+
+idempotency:
+  coverage: none
+  mechanism: null
+  header: null
+  scope: []
+  note: >-
+    No replay-protection mechanism is published anywhere in the AEC developer portal. The string
+    "idempoten" does not appear in the portal's full content index (7,160 indexed sections,
+    0 matches, checked 2026-09-04). Aflac documents PUT-vs-PATCH semantics and an RPC-style
+    POST /{collection}/actions/{action-name} pattern for non-CRUD writes, but names no
+    idempotency key, no request-id de-duplication, and no retry-safety guidance on the REST
+    surface. Retry strategies ARE documented — but for the Kafka event platform (AES), not for
+    synchronous API writes.
+
+reversibility:
+  grade: none
+  coverage: none
+  write_surfaces:
+  - surface: 'POST /{collection} (create)'
+    reversal_operation: null
+    window: null
+    note: >-
+      No cancel/void/undo counterpart is documented. DELETE exists as a verb in the platform
+      grammar, but no page states whether a delete is soft or hard, or whether a created resource
+      can be withdrawn.
+  - surface: 'PUT / PATCH /{collection}/{item-id} (update)'
+    reversal_operation: null
+    window: null
+    note: No restore-previous-version or rollback path is documented.
+  - surface: 'DELETE /{collection}/{item-id}'
+    reversal_operation: null
+    window: null
+    note: No restore window is stated.
+  - surface: 'POST /{collection}/actions/{action-name} (RPC action)'
+    reversal_operation: null
+    window: null
+    note: >-
+      The published example — updateHurricaneImpactStatus — is a real-world consequential write
+      with no documented reverse action.
+  note: >-
+    Not `na`: AEC APIs plainly have a write surface (POST/PUT/PATCH/DELETE plus an actions
+    pattern are all in the published verb table). Aflac simply does not document any reversal
+    operation or window for any of them. NO WINDOW IS ASSERTED HERE because none is published;
+    inventing one would be the single most expensive error this artifact could make.
+
+dry_run_mode:
+  supported: false
+  note: >-
+    No dry-run, preview, validate-only or simulate parameter is documented. The nearest published
+    equivalent is environment separation — a full dev and syst estate at
+    enterprise-connect.aflacdev.com and enterprise-connect.aflacqa.com, with their own portals —
+    plus a Robot Framework test-automation folder shipped with every new service. See
+    sandbox/aflac-sandbox.yml.
+
+request_tracing:
+  header: not published
+  note: >-
+    A "How To Debug A Request" guide exists and discusses the JWT on the request, but no
+    correlation/request-id header name is published anonymously. metadata.descriptions[].context
+    identifies the emitting service on the response side.
+
+field_expansion:
+  supported: not published
+metadata_fields:
+  supported: not published
+
+event_surface:
+  name: AES — Aflac Enterprise Stream
+  relationship: A component of AEC providing event-driven capabilities alongside the REST APIs.
+  transport: Kafka (AWS MSK)
+  producer_consumer: System Layer APIs act as both event producers and consumers.
+  retry_strategies: >-
+    Four named strategies, including Fast-Order-Sensitive (FOS) for events that must be processed
+    in strict sequence to maintain data integrity.
+  asyncapi_published: false
+  webhooks_published: false
+  note: >-
+    A real, documented event platform — but it is internal Kafka, not a consumer-facing webhook or
+    streaming product. No AsyncAPI document and no webhook catalog is published, so no AsyncAPI or
+    Webhooks pointer is wired.

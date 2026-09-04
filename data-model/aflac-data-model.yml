@@ -1,0 +1,247 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  Aflac Enterprise Connect developer portal, https://docs.enterprise-connect.aflac.com —
+  the "EDS - Enterprise Data Structures" v2020 section (3,292 indexed content sections), read
+  from the portal's public content index /assets/ng-doc/indexes.json (HTTP 200, application/json,
+  3,007,250 bytes, fetched 2026-09-04). Entity inventory taken from the published library
+  overviews and the aflac-canonicals-payload union type.
+docs: https://docs.enterprise-connect.aflac.com/docs/developer-guide/enterprise-data-structures/v2020/support-libraries/api-specific/aflac-canonicals-payload
+provider: aflac
+standard: EDS — Enterprise Data Structures, v2020 (with an EDS 2026 entity list governing new endpoint names)
+owner: IC4E team (Integration Center for Excellence), Aflac
+summary: >-
+  Aflac publishes its enterprise canonical data model in full and openly. EDS is mandatory: request
+  and response payloads between the Experience, Process and System API layers must conform to it,
+  and the entity name used for any new REST collection must already exist in EDS. This is a genuine
+  first-party enterprise data model for supplemental insurance — accounts, insurance agreements,
+  claims, producers, products and financials — not a derivation from a specification we authored.
+
+union_type:
+  name: aflac-canonicals-payload
+  description: >-
+    The union of all available canonicals representing Aflac business entities, designed to be
+    all-inclusive. Each element is an optional array, so one payload can carry any combination of
+    entities. This is the practical entry point to the whole model.
+
+libraries:
+- library: base-library
+  group: support
+  purpose: >-
+    Foundational, highly generic building blocks reused across every business domain.
+  entities: [address, basic-questions-set, contact-base, contact-information, email-address, field,
+    habit, language, master-key, named-fields-set, named-selection, named-selections-set,
+    persisted-payload, person-name, phone, recursively-nested-flexible-object, relationship, skill,
+    social-media-account, source, split-line, super-business-entity, typed-name-value-pair, version]
+- library: api-specific
+  group: support
+  purpose: Structures applied to API payloads rather than held in EDS itself.
+  entities: [aflac-canonicals-payload, general-response, metadata, pagination-info,
+    application-service-message]
+  note: >-
+    general-response, metadata, pagination-info and application-service-message are explicitly NOT
+    EDS structures — they are the API envelope. See errors/aflac-problem-types.yml.
+- library: canonical-constants
+  group: support
+  purpose: Shared constant definitions across canonicals.
+  entities: [canonical-constants]
+- library: utility-library
+  group: support
+  purpose: Helper utilities for traversing related entities.
+  entities: [relatedentityutil]
+- library: account-library
+  group: aflac-business
+  purpose: Employer/group account, its contract and its proposal.
+  entities: [account, account-contract, account-proposal, funding-info, account-enums]
+- library: claim-library
+  group: aflac-business
+  purpose: The claim domain.
+  entities: [claim, claim-line, claim-line-grouping, claimable-event, claim-enums]
+  vocabulary:
+    claimant: The entity named in an insurance-agreement as the covered person.
+    beneficiary: The entity named in an insurance-agreement that receives the proceeds of a claim.
+    participant: >-
+      An entity that takes part in a claimable-event — for example, if an ambulance transports the
+      claimant, both the claimant and the ambulance organization are participants.
+- library: insurance-agreement-library
+  group: aflac-business
+  purpose: The policy/certificate contract itself.
+  entities: [insurance-agreement]
+- library: insured-library
+  group: aflac-business
+  purpose: The covered person.
+  entities: [insured]
+- library: product-library
+  group: aflac-business
+  purpose: Product catalog, plan design, rating and state filings.
+  entities: [product, product-family, product-state-filing, plan, benefit, rate, factor, product-enums]
+- library: producer-library
+  group: aflac-business
+  purpose: Agents, brokerages, licensing, appointments and commissions.
+  entities: [producer, brokerage, producer-appointment, producer-contract, producer-license,
+    producer-commission, producer-commission-line, producer-enums]
+- library: person-library
+  group: aflac-business
+  purpose: People, memberships and learning records.
+  entities: [person, membership, learning-certification, learning-module, person-enums]
+- library: organization-library
+  group: aflac-business
+  purpose: Organizations as business entities.
+  entities: [organization]
+- library: carrier-library
+  group: aflac-business
+  purpose: Insurance carriers.
+  entities: [carrier]
+- library: invoice-library
+  group: aflac-business
+  purpose: Billing documents and their lines.
+  entities: [invoice, bill, bill-line]
+- library: financials-library
+  group: general-business
+  purpose: Financial accounts, institutions and transactions.
+  entities: [financial-account, financial-account-check, financial-account-owner,
+    financial-institution, financial-transaction, financial-transaction-line,
+    previous-financial-account, financial-enums]
+- library: party-library
+  group: general-business
+  purpose: The party abstraction over person and organization.
+  entities: [party]
+- library: communication-library
+  group: general-business
+  purpose: Communications sent to and from parties.
+  entities: [communication]
+- library: content-library
+  group: general-business
+  purpose: Content items.
+  entities: [content]
+- library: production-library
+  group: general-business
+  purpose: Production arrangements.
+  entities: [production-arrangement]
+- library: workflow-library
+  group: general-business
+  purpose: Workflow items.
+  entities: [workflow-item]
+
+relationships:
+- from: account-proposal
+  to: account-contract
+  type: has_many
+  evidence: >-
+    Published worked example — "an account-proposal with one account-contract and an
+    insurance-agreement that is used as a master-certificate-proposal".
+- from: account-contract
+  to: insurance-agreement
+  type: has_many
+  evidence: Same published account-proposal example.
+- from: insurance-agreement
+  to: plan
+  type: has_many
+  evidence: >-
+    Published example — "The insurance-agreement has 9 plans and 32 benefits".
+- from: plan
+  to: benefit
+  type: has_many
+  evidence: Same published example (32 benefits across 9 plans).
+- from: insurance-agreement
+  to: product-family
+  type: belongs_to
+  evidence: >-
+    Published example — "based on a Group Critical Illness product by Aflac Group Carrier and
+    designed under the Critical Illness product-family".
+- from: insurance-agreement
+  to: carrier
+  type: belongs_to
+  evidence: Same published example ("by Aflac Group Carrier").
+- from: account-proposal
+  to: producer
+  type: has_many
+  evidence: Same published example ("Two Producers have worked to setup this proposal").
+- from: insurance-agreement
+  to: insured
+  type: has_many
+  via: claimant / covered person
+  evidence: Claim library vocabulary — the claimant is named in an insurance-agreement.
+- from: claim
+  to: claim-line
+  type: has_many
+  evidence: Claim library canonical set (claim, claim-line, claim-line-grouping).
+- from: claim-line-grouping
+  to: claim-line
+  type: has_many
+  evidence: Claim library canonical set.
+- from: claim
+  to: claimable-event
+  type: belongs_to
+  evidence: >-
+    Claim library vocabulary — participants take part in a claimable-event, which the claim arises from.
+- from: party
+  to: person
+  type: has_one
+  via: party abstraction
+  evidence: Party library sits over person-library and organization-library.
+- from: party
+  to: organization
+  type: has_one
+  via: party abstraction
+  evidence: Party library sits over person-library and organization-library.
+- from: producer
+  to: producer-license
+  type: has_many
+  evidence: Producer library canonical set.
+- from: producer
+  to: producer-appointment
+  type: has_many
+  evidence: Producer library canonical set.
+- from: producer
+  to: producer-commission
+  type: has_many
+  evidence: Producer library canonical set.
+- from: producer-commission
+  to: producer-commission-line
+  type: has_many
+  evidence: Producer library canonical set.
+- from: invoice
+  to: bill
+  type: has_many
+  evidence: Invoice library canonical set (invoice, bill, bill-line).
+- from: bill
+  to: bill-line
+  type: has_many
+  evidence: Invoice library canonical set.
+- from: financial-account
+  to: financial-account-owner
+  type: has_many
+  evidence: Financials library canonical set.
+- from: financial-transaction
+  to: financial-transaction-line
+  type: has_many
+  evidence: Financials library canonical set.
+- from: product
+  to: product-state-filing
+  type: has_many
+  evidence: Product library canonical set; premiums are filed per product per state.
+- from: product-family
+  to: product
+  type: has_many
+  evidence: Product library canonical set plus the account-proposal worked example.
+
+conventions:
+  attribute_naming: kebab-case throughout (page-number, short-description, claim-line-grouping)
+  collection_naming: >-
+    Every REST collection name must correspond to an entity that exists in EDS 2026; if the entity
+    should exist but does not, teams must raise it with the IC4E team.
+  deprecation_marking: >-
+    Superseded fields are marked in place rather than removed — contact-information is "@Deprecated
+    in the Java VO, use individual contact elements directly"; funding-info is deprecated in favour
+    of premium-collection-method and payment-method inside the account canonical's
+    configurable-attributes; email-address carries a deprecated field whose preference-index moved
+    into the address VO.
+
+not_published:
+- Field-level JSON Schema or machine-readable EDS artifacts (the model is published as HTML documentation).
+- Id-prefix scheme or identifier format per entity.
+coverage_note: >-
+  Entity inventory and relationships above are taken verbatim from Aflac's published library
+  overviews and its own worked examples. Relationships not evidenced by a published statement or
+  example have been left out rather than guessed at from entity names.

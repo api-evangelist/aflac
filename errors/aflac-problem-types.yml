@@ -1,0 +1,116 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  Aflac Enterprise Connect developer portal, https://docs.enterprise-connect.aflac.com —
+  /docs/developer-guide/enterprise-data-structures/v2020/support-libraries/api-specific/non-eds-api-specific-models/general-response,
+  .../metadata, .../application-service-message, .../pagination-info, and
+  /docs/developer-guide/app-team-controls/openapi-specification. Read from the portal's public
+  content index /assets/ng-doc/indexes.json (HTTP 200, 2026-09-04).
+docs: https://docs.enterprise-connect.aflac.com/docs/developer-guide/enterprise-data-structures/v2020/support-libraries/api-specific/api-specific-overview
+provider: aflac
+format: custom-envelope
+rfc9457: false
+content_type: application/json or application/xml (the caller selects; both are supported)
+summary: >-
+  AEC does not use RFC 9457 problem+json. Every Integration API response — success or failure —
+  is wrapped in the same `general-response` envelope, and errors are carried as a typed,
+  machine-readable list inside `metadata.descriptions[]`. The envelope is defined in Aflac's own
+  eib-core-library (GeneralResponse.java, Metadata.java, ApplicationServiceMessage.java), which is
+  the closest thing AEC has to an error catalog: the SHAPE is published, the code VALUES are
+  service-specific and are not published as an enumerated list.
+
+envelope:
+  name: general-response
+  fields:
+  - field: metadata
+    type: metadata
+    required: true
+    description: HTTP status code, result label, descriptive messages, optional pagination info.
+  - field: data
+    type: generic (T)
+    required: true
+    description: The business payload — a single EDS object or a collection. Varies per endpoint.
+
+metadata:
+  fields:
+  - field: status
+    type: enumerated string
+    values: [success, failure, partial]
+    description: Human-readable result label for the response.
+  - field: code
+    type: integer
+    description: >-
+      The HTTP status code, taken from the Spring Framework HttpStatus enum, so every standard
+      status code is representable (200, 400, 500, ...).
+  - field: descriptions
+    type: application-service-message[]
+    description: Detailed messages associated with the response — errors, warnings or informational.
+  - field: pagination-info
+    type: pagination-info
+    optional: true
+    description: Present only on responses returning a collection.
+
+problem_types:
+- id: application-service-message
+  title: Application service message
+  description: >-
+    The single unit of error/warning/info reporting across every AEC Integration API. One response
+    may carry several. This is the structure a client parses to decide what went wrong.
+  fields:
+  - field: context
+    type: string
+    description: Identifies the service or component that generated the message.
+  - field: type
+    type: string
+    values: [info, warning, error]
+    description: Severity level of the message.
+  - field: code
+    type: string
+    description: >-
+      A short application-specific code identifying the message. Values are defined per service;
+      Aflac publishes no enumerated cross-platform code list.
+  - field: short-description
+    type: string
+    description: A brief, human-readable label or key for the message.
+  - field: long-description
+    type: string
+    description: A detailed explanation of the message.
+
+statuses:
+- status: partial
+  meaning: >-
+    A first-class outcome in AEC, not an error. metadata.status may be `partial`, meaning some of
+    the requested work succeeded and metadata.descriptions[] explains the remainder. Clients that
+    branch only on 2xx-vs-non-2xx will mis-handle this.
+- status: failure
+  meaning: The operation did not succeed; metadata.descriptions[] carries one or more type=error messages.
+- status: success
+  meaning: The operation succeeded; descriptions[] may still carry info or warning messages.
+
+gateway_errors:
+- code: 500
+  source: AWS API Gateway (AEC platform, not the backing service)
+  title: Service down, gateway up
+  description: >-
+    Published in the health-endpoint and OpenAPI guidance: if the application behind the gateway is
+    down, the caller receives an HTTP 500 whose body explains that the service is down but the API
+    gateway is up. This distinguishes a platform outage from a service outage.
+  remediation: Retry against the service health endpoint at /{version}/health to confirm.
+- code: 403
+  source: AWS API Gateway
+  title: Forbidden
+  body: '{"message":"Forbidden"}'
+  description: >-
+    Observed on every anonymous request to https://enterprise-connect.aflac.com (probed 2026-09-04,
+    HTTP 403, 23 bytes). The gateway default for a request with no valid OAuth 2.0 bearer token.
+  remediation: >-
+    Obtain an OAuth 2.0 client_credentials token; AEC supports no other authentication method.
+
+not_published:
+- An enumerated catalog of error `code` values across services.
+- Retry-After / rate-limit response headers and the status returned on quota exhaustion.
+- A machine-readable error registry or problem-type URI scheme.
+coverage_note: >-
+  The envelope and the message structure are fully published and are genuinely first-party. The
+  VALUES are not: no page enumerates the application-specific `code` strings, because each AEC
+  service defines its own. Nothing has been invented here to fill that gap.

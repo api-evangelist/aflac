@@ -1,0 +1,71 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  Unauthenticated registry queries run 2026-09-04 — registry.npmjs.org search + package metadata,
+  pypi.org/pypi/aflac/json, search.maven.org solrsearch for g:com.aflac*, api.cloudsmith.io — plus
+  the Aflac Enterprise Connect developer portal (https://docs.enterprise-connect.aflac.com) and the
+  Aflac-SCM GitHub organization.
+provider: aflac
+official_package_count: 0
+summary: >-
+  Aflac publishes NO first-party client SDK to any public package registry. This is not an oversight
+  in our search: AEC's own documentation says its shared Java libraries are distributed through
+  Cloudsmith behind Maven settings.xml credentials, which is a private registry by design. There is
+  therefore no SDKs pointer wired in apis.yml — an official SDK count of zero is the honest reading.
+
+registries_checked:
+- registry: npm
+  query: registry.npmjs.org search "aflac"
+  result: one unrelated third-party package (below); no Aflac-owned scope or org
+- registry: pypi
+  query: https://pypi.org/pypi/aflac/json
+  status: 404
+  result: none
+- registry: maven-central
+  query: 'search.maven.org solrsearch q=g:com.aflac*'
+  result: numFound 0 — no com.aflac group is published to Maven Central
+  note: >-
+    AEC documentation references internal Java artifacts under com.aflac.* (for example
+    com.aflac.aes.lib.topic.producer.core.impl.AesMskKafkaTopicProducer and the eib-core-library
+    that defines GeneralResponse/Metadata/ApplicationServiceMessage). None of them is on Maven
+    Central; the onboarding guide directs developers to configure Maven settings.xml for Cloudsmith.
+- registry: cloudsmith
+  query: https://api.cloudsmith.io/v1/orgs/aflac/
+  status: 404
+  result: not publicly resolvable — private distribution
+- registry: nuget
+  result: none found (AEC documents .NET runtime services but publishes no public NuGet package)
+- registry: rubygems
+  result: none found
+- registry: crates.io
+  result: none found
+- registry: pkg.go.dev
+  result: none found
+
+packages:
+- name: aflac-shared-services
+  registry: npm
+  url: https://www.npmjs.com/package/aflac-shared-services
+  official: false
+  version: 1.0.1
+  published: '2020-03-12'
+  description: 'NPM Library which contains shared services like logging, error handling etc'
+  publisher: dinesh.k7
+  repository: null
+  note: >-
+    NOT treated as first-party. It carries the Aflac name but is published by an individual
+    account with no Aflac scope, no organization ownership, no repository link, and no reference
+    from any Aflac property. Recorded here so a later pass does not re-discover it and mistake it
+    for an SDK. Last release 2020-03-12 — over six years stale.
+
+source_repositories:
+- org: Aflac-SCM
+  url: https://github.com/Aflac-SCM
+  status: 200
+  public_repos: 0
+  note: >-
+    The organization exists and its page loads, but it publishes zero public repositories
+    (GitHub API /orgs/Aflac-SCM/repos returned an empty array, 2026-09-04). The GitHubOrganization
+    pointer is live but there is no code behind it to harvest.
+
+cdn_distribution: []

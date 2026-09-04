@@ -1,0 +1,25 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  Search of Aflac's public surface for a hosted or local MCP server — the Aflac Enterprise Connect
+  developer portal content index (https://docs.enterprise-connect.aflac.com/assets/ng-doc/indexes.json,
+  7,160 sections), the Aflac-SCM GitHub organization (0 public repositories), and npm/PyPI registry
+  queries. Checked 2026-09-04.
+provider: aflac
+status: none
+tools: []
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: searched
+note: >-
+  No MCP server, hosted or stdio, is published by Aflac. NO CANDIDATE TOOL LIST HAS BEEN DERIVED
+  and no MCPServer pointer is wired in apis.yml. Deriving one would be unsafe here for a specific
+  reason: the only OpenAPI documents in this repository are API Evangelist-authored scaffolds
+  (openapi/_ae-authored/, x-generated-from: documentation) whose operationIds and hosts were never
+  published by Aflac — api.enterprise-connect.aflac.com and auth.enterprise-connect.aflac.com are
+  both NXDOMAIN. A tool list built from them would describe operations that do not exist. Aflac's
+  real service contracts are OAuth-gated behind the portal's Swagger console.

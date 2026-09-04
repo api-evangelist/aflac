@@ -1,0 +1,164 @@
+generated: '2026-09-04'
+method: probed
+source: >-
+  Anonymous HTTP GET of each /.well-known/ path on every host this record knows — the registrable
+  domain and www, the AEC developer-portal host, the live AEC API gateway host, and api.aflac.com.
+note: >-
+  RECORDED ABSENCE. Not one path returned a real document on any host, so no WellKnown or
+  SecurityTxt pointer is wired in apis.yml. Three distinct edge behaviours account for every row
+  and none of them is a served document: aflac.com / www.aflac.com answer 403 "Access Denied" from
+  Akamai for every path (an ordinary bot policy — the site itself is live in a browser);
+  docs.enterprise-connect.aflac.com is an Angular SPA whose catch-all returns the SAME 12,025-byte
+  application shell for every unknown path, so its 200s are soft-404s, not documents;
+  enterprise-connect.aflac.com is an AWS API Gateway that answers every unauthenticated path with
+  403 {"message":"Forbidden"}.
+hosts:
+- host: aflac.com
+  note: Akamai edge returns 403 "Access Denied" for every path, including the site root.
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 403
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 403
+    file: null
+  - path: /.well-known/api-catalog
+    status: 403
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 403
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 403
+    file: null
+  - path: /.well-known/agent.json
+    status: 403
+    file: null
+- host: www.aflac.com
+  note: Same Akamai bot policy as the apex; a browser User-Agent did not change the verdict.
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 403
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 403
+    file: null
+  - path: /.well-known/api-catalog
+    status: 403
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 403
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 403
+    file: null
+  - path: /.well-known/agent.json
+    status: 403
+    file: null
+- host: docs.enterprise-connect.aflac.com
+  note: >-
+    SPA catch-all. Every path below returned HTTP 200 with content-type text/html and exactly
+    12,025 bytes — byte-identical to the portal's index shell. A 200 here is NOT a document.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: null
+    verdict: soft-404
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: null
+    verdict: soft-404
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: null
+    verdict: soft-404
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: null
+    verdict: soft-404
+  - path: /.well-known/api-catalog
+    status: 200
+    file: null
+    verdict: soft-404
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    file: null
+    verdict: soft-404
+  - path: /.well-known/agent-card.json
+    status: 200
+    file: null
+    verdict: soft-404
+  - path: /.well-known/agent.json
+    status: 200
+    file: null
+    verdict: soft-404
+- host: enterprise-connect.aflac.com
+  note: >-
+    The live AEC API gateway (AWS API Gateway). Every unauthenticated request, including the root,
+    returns 403 with the 23-byte body {"message":"Forbidden"}.
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 403
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 403
+    file: null
+  - path: /.well-known/api-catalog
+    status: 403
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 403
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 403
+    file: null
+  - path: /.well-known/agent.json
+    status: 403
+    file: null
+- host: api.aflac.com
+  note: >-
+    Resolves to an AWS ELB and answers 401 Unauthorized at the root. Every /.well-known/ path
+    returns a genuine 404 error page.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null

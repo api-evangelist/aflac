@@ -1,9 +1,41 @@
-generated: '2026-07-11'
+# NOTE added 2026-09-04 by the enrichment pass. These scopes and the tokenUrl below are DERIVED
+# from openapi/_ae-authored/ scaffolds written by API Evangelist, not from anything Aflac
+# published. Aflac publishes NO OAuth scope reference anonymously, and the host
+# auth.enterprise-connect.aflac.com in the tokenUrl resolves NXDOMAIN (checked 2026-09-04).
+# Aflac's own documentation states OAuth 2.0 client-credentials is the only supported method but
+# does not enumerate scopes. Treat every scope string below as an API Evangelist derivation.
+# See authentication/aflac-authentication.yml for the searched, first-party auth profile.
+generated: '2026-09-04'
 method: derived
-source: openapi/aflac-enterprise-connect-openapi.yml
+source: openapi/aflac-claims-api-openapi.yml, openapi/aflac-eligibility-api-openapi.yml, openapi/aflac-enrollment-api-openapi.yml,
+  openapi/aflac-groups-api-openapi.yml, openapi/aflac-policies-api-openapi.yml
 schemes:
 - name: oauth2
-  source: openapi/aflac-enterprise-connect-openapi.yml
+  source: openapi/aflac-claims-api-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://auth.enterprise-connect.aflac.com/oauth/token
+  description: OAuth 2.0 client credentials flow for server-to-server API access.
+- name: oauth2
+  source: openapi/aflac-eligibility-api-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://auth.enterprise-connect.aflac.com/oauth/token
+  description: OAuth 2.0 client credentials flow for server-to-server API access.
+- name: oauth2
+  source: openapi/aflac-enrollment-api-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://auth.enterprise-connect.aflac.com/oauth/token
+  description: OAuth 2.0 client credentials flow for server-to-server API access.
+- name: oauth2
+  source: openapi/aflac-groups-api-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://auth.enterprise-connect.aflac.com/oauth/token
+  description: OAuth 2.0 client credentials flow for server-to-server API access.
+- name: oauth2
+  source: openapi/aflac-policies-api-openapi.yml
   flows:
   - flow: clientCredentials
     tokenUrl: https://auth.enterprise-connect.aflac.com/oauth/token
@@ -14,34 +46,58 @@ scopes:
   flows:
   - clientCredentials
   sources:
-  - openapi/aflac-enterprise-connect-openapi.yml
+  - openapi/aflac-claims-api-openapi.yml
+  - openapi/aflac-eligibility-api-openapi.yml
+  - openapi/aflac-enrollment-api-openapi.yml
+  - openapi/aflac-groups-api-openapi.yml
+  - openapi/aflac-policies-api-openapi.yml
 - scope: claims:write
   description: Submit claims
   flows:
   - clientCredentials
   sources:
-  - openapi/aflac-enterprise-connect-openapi.yml
+  - openapi/aflac-claims-api-openapi.yml
+  - openapi/aflac-eligibility-api-openapi.yml
+  - openapi/aflac-enrollment-api-openapi.yml
+  - openapi/aflac-groups-api-openapi.yml
+  - openapi/aflac-policies-api-openapi.yml
 - scope: eligibility:read
   description: Verify eligibility
   flows:
   - clientCredentials
   sources:
-  - openapi/aflac-enterprise-connect-openapi.yml
+  - openapi/aflac-claims-api-openapi.yml
+  - openapi/aflac-eligibility-api-openapi.yml
+  - openapi/aflac-enrollment-api-openapi.yml
+  - openapi/aflac-groups-api-openapi.yml
+  - openapi/aflac-policies-api-openapi.yml
 - scope: enrollment:read
   description: Read enrollment records
   flows:
   - clientCredentials
   sources:
-  - openapi/aflac-enterprise-connect-openapi.yml
+  - openapi/aflac-claims-api-openapi.yml
+  - openapi/aflac-eligibility-api-openapi.yml
+  - openapi/aflac-enrollment-api-openapi.yml
+  - openapi/aflac-groups-api-openapi.yml
+  - openapi/aflac-policies-api-openapi.yml
 - scope: enrollment:write
   description: Create and update enrollments
   flows:
   - clientCredentials
   sources:
-  - openapi/aflac-enterprise-connect-openapi.yml
+  - openapi/aflac-claims-api-openapi.yml
+  - openapi/aflac-eligibility-api-openapi.yml
+  - openapi/aflac-enrollment-api-openapi.yml
+  - openapi/aflac-groups-api-openapi.yml
+  - openapi/aflac-policies-api-openapi.yml
 - scope: groups:read
   description: Read group records
   flows:
   - clientCredentials
   sources:
-  - openapi/aflac-enterprise-connect-openapi.yml
+  - openapi/aflac-claims-api-openapi.yml
+  - openapi/aflac-eligibility-api-openapi.yml
+  - openapi/aflac-enrollment-api-openapi.yml
+  - openapi/aflac-groups-api-openapi.yml
+  - openapi/aflac-policies-api-openapi.yml

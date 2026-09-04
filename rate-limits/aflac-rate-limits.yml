@@ -4,30 +4,84 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: aflac
 providerId: aflac
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-05'
-reconciled: false
-notes: Aflac does not publish public API rate-limit documentation. Broker/employer integrations
-  are governed by partner agreements.
+modified: '2026-09-04'
+generated: '2026-09-04'
+method: searched
+source: >-
+  https://docs.enterprise-connect.aflac.com/docs/developer-guide/app-team-controls/rate-limiting-aka-throttling
+  — the Aflac Enterprise Connect "Rate Limiting aka Throttling" page, read from the portal's public
+  content index /assets/ng-doc/indexes.json (HTTP 200, 2026-09-04). Upgrades the 2026-05-04
+  generated placeholder, which said Aflac published nothing on the subject. It does.
+docs: https://docs.enterprise-connect.aflac.com/docs/developer-guide/app-team-controls/rate-limiting-aka-throttling
+reconciled: true
 tags:
   - Rate Limiting
   - Insurance
-description: Aflac does not publish public rate limits. Any thresholds are configured under the
-  broker/employer integration contract.
+  - AWS API Gateway
+description: >-
+  Aflac Enterprise Connect enforces rate limiting at the AWS API Gateway stage on every path and
+  HTTP method of every service. Limits are configured per path + method in an optional
+  apispec/aws/config.yaml, and where a service sets nothing, a default is applied automatically
+  from the service's architectural layer. What Aflac does NOT publish is the actual numbers, the
+  response headers, or the status code on exhaustion — so a caller cannot predict or detect
+  throttling from the documentation alone.
 sources:
-  - https://www.aflac.com/
+  - https://docs.enterprise-connect.aflac.com/docs/developer-guide/app-team-controls/rate-limiting-aka-throttling
+  - https://docs.enterprise-connect.aflac.com/docs/platform-overview/architecture/service-naming-conventions
 responseCodes:
-  throttled: 429
-  serviceUnavailable: 503
+  throttled: not published
+  serviceUnavailable: not published
+limit_count: 0
 limits:
-  - name: Partner-scoped limit
+  - name: Per-path, per-method throttle
+    scope: endpoint
+    metric: requests
+    limit: not published
+    burst: not published
+    window: not published
+    configured_in: apispec/aws/config.yaml (rateLimit / burstLimit per path + HTTP method)
+    enforced_at: AWS API Gateway stage
+    note: >-
+      "The path and http method specified in the config.yaml file must be included in your open api
+      specification." The limit is therefore bound to a declared OpenAPI operation, not to a route
+      pattern.
+  - name: Layer-based default
+    scope: endpoint
+    metric: requests
+    limit: not published
+    note: >-
+      "Rate limiting is enabled on all paths and HTTP methods. You do not need to specify a
+      burstLimit or rateLimit per path and method, a sensible default will be applied based on your
+      application level (aspect/process/system/experience/core)." The five layers are the same
+      prefixes used in AEC service naming — a-, p-, s-, e-, c-.
+  - name: Quotas
     scope: account
-    metric: varies
-    limit: see partner agreement
+    metric: requests
+    limit: not published
+    note: >-
+      Quotas are configurable alongside throttles, in the same AWS API Gateway mechanism.
 policies:
-  - name: Partner-scoped
-    description: Rate limits, if any, are set per broker/employer integration contract.
-  - name: Backoff
-    description: Use exponential backoff with jitter; honor Retry-After when present.
+  - name: Best-effort, not a ceiling
+    description: >-
+      Aflac states plainly that "both throttles and quotas are applied on a best-effort basis and
+      should be thought of as targets rather than guaranteed request ceilings."
+  - name: Purpose
+    description: >-
+      "It helps prevent abuse, ensures fair usage, and maintains API performance ... This in turn
+      helps protect the user experience in systems like MyAflac."
+  - name: Testable by design
+    description: >-
+      The platform simulator service e-aec-test is deliberately configured with extremely low
+      limits so throttling can be triggered in automated tests, exposing a worked path
+      /v1/i-am-rate-limited. Aflac notes it is "unlikely you'd set this low a limit in production".
+response_headers:
+  published: false
+  headers: []
+  note: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After header is documented, and no status code is stated
+    for an exhausted limit. This is the material gap: an agent can be throttled by AEC with no
+    documented runtime signal telling it so. AWS API Gateway's own default for a breached throttle
+    is 429 with a Retry-After, but Aflac does not say that, so it is not asserted here.
+notes: >-
+  Recorded from Aflac's own documentation. The limits ARE published as a mechanism and a policy;
+  the VALUES are not, hence limit_count: 0 — nothing numeric exists to record.

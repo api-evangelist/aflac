@@ -1,0 +1,89 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  Aflac Enterprise Connect developer portal, https://docs.enterprise-connect.aflac.com —
+  /docs/platform-overview/architecture/service-naming-conventions (Versioning section),
+  /docs/developer-guide/app-team-controls/openapi-specification,
+  /docs/platform-overview/cicd-pipeline-overview/*, and the EDS deprecation notes. Read from the
+  portal's public content index /assets/ng-doc/indexes.json (HTTP 200, 2026-09-04).
+docs: https://docs.enterprise-connect.aflac.com/docs/platform-overview/architecture/service-naming-conventions
+provider: aflac
+
+versioning:
+  scheme: path + service-identity
+  policy: >-
+    An AEC application is identified by info.title + info.version from its OpenAPI spec — title
+    e-foo with version '1' becomes the deployed application e-foo-1, and that pairing is what forms
+    the HTTP path to the service. info.version must be a bare integer in single quotes.
+  path_versioning: >-
+    Every resource path begins with the version segment declared on the controller (/v1/health,
+    /v2/policy). Path versioning RESETS for each new service version — e-aec-2 still serves /v1/ paths.
+  major_version_policy: >-
+    A new major version is deployed as a NEW service alongside the old one. "If you wanted to
+    develop a completely new version of e-foo-1 called e-foo-2 and want to leave e-foo-1 for
+    applications that haven't moved to the new one yet." The name gains a -2 / -3 suffix; version 1
+    is implicit and must never be written as -1 or -v1.
+  partition_vs_version: >-
+    An integer suffix on an operations service (p-claim-operations2) is a PARTITION index, not a
+    version — a documented distinction that is easy to misread.
+  data_model_version: EDS v2020 is the published structure set; an EDS 2026 entity list governs new endpoint names.
+
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  practice: >-
+    Aflac deprecates at the FIELD and CANONICAL level and marks it in place in the published
+    documentation, with a stated replacement. Observed examples: contact-information is
+    "@Deprecated in the Java VO — use individual contact elements (address, email-address, phone)
+    directly"; funding-info is "(deprecated - use premium-collection-method and payment-method
+    fields in configurable-attributes of the account canonical)"; an email-address field is
+    deprecated because preference-index moved into the address VO.
+  note: >-
+    No time-bound deprecation policy, no removal schedule, and no Sunset/Deprecation response
+    headers are published. Version retirement is handled by leaving the older service running for
+    consumers that have not migrated, with no stated end date. No Deprecation pointer is wired in
+    apis.yml because there is no policy to point at — only in-place field notices.
+
+release_management:
+  ci_cd: >-
+    Documented AEC CI/CD pipeline: base-infrastructure deploy pipelines and per-service pipelines,
+    with a transform-open-api-spec step that rewrites the service's OpenAPI for AWS API Gateway.
+  gate: >-
+    An IC4E architect must approve the OpenAPI spec against a published checklist before the first
+    deploy to DEV, SYST or PROD; a New Service Approval Checklist exists as its own runbook.
+  environments: [dev, syst, prod]
+  test_automation: >-
+    Every new Java service is scaffolded with an automation folder for Robot Framework test
+    automation; a platform-level "Approach to test automation" page is published.
+
+changelog:
+  published: false
+  probe:
+    note: >-
+      The string "changelog" and the phrase "release note" both return ZERO matches across the
+      portal's 7,160 indexed content sections (checked 2026-09-04). The portal carries a "Known
+      issues" runbook under IC4E Team Internal, but no dated release history.
+
+status_page:
+  published: false
+  note: >-
+    No status page, uptime page or incident history is published for AEC. "status page" returns
+    zero matches in the portal index. Service health is exposed per-service instead, via a
+    mandatory /{version}/health endpoint on every integration API — which is a liveness probe for
+    an authenticated caller, not a public status surface.
+
+sla:
+  published: false
+  note: >-
+    No availability or latency SLA is published. Aflac does state that rate-limit throttles and
+    quotas are "applied on a best-effort basis and should be thought of as targets rather than
+    guaranteed request ceilings", which is the opposite of an SLA commitment.
+
+deprecated_operations: []
+deprecated_operations_note: >-
+  None can be listed. The only OpenAPI documents in this repository are API Evangelist-authored
+  (openapi/_ae-authored/), so any "deprecated: true" flag in them would be ours, not Aflac's. The
+  real AEC service specifications are served only to authenticated users through the portal's
+  Swagger console.
