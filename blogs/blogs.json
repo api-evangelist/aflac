@@ -2,20 +2,18 @@
   "repo": "aflac",
   "feeds": [
     {
+      "source": "https://www.aflac.com/contact-aflac/default.aspx",
+      "error": "HTTPError"
+    },
+    {
       "source": "https://newsroom.aflac.com/",
       "feed_url": "https://newsroom.aflac.com/",
       "title": "",
       "saved": 0,
-      "method": "none",
-      "nature": "undetermined",
-      "nature_basis": null
-    },
-    {
-      "source": "https://www.aflac.com/contact-aflac/default.aspx",
-      "error": "HTTPError"
+      "method": "none"
     }
   ],
-  "fetched": "2026-08-30T22:33:40Z",
+  "fetched": "2026-09-06T19:17:18Z",
   "post_count": 7,
   "feed_nature": "vendor-blog",
   "feed_nature_basis": "path_blog",
