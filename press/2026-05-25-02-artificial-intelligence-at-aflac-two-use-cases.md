@@ -1,7 +1,9 @@
 ---
 title: Artificial Intelligence at Aflac - Two Use Cases
 url: https://emerj.com/artificial-intelligence-at-aflac/
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"Aflac" press release artificial intelligence'
 position: 2
 source: serpapi-google

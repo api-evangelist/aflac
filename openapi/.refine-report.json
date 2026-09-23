@@ -1,11 +1,7 @@
 {
   "provider": "aflac",
   "sources": [
-    "aflac-claims-api-openapi.yml",
-    "aflac-eligibility-api-openapi.yml",
-    "aflac-enrollment-api-openapi.yml",
-    "aflac-groups-api-openapi.yml",
-    "aflac-policies-api-openapi.yml"
+    "_ae-authored/aflac-enterprise-connect-openapi.yml"
   ],
   "outputs": [
     "aflac-claims-api-openapi.yml",
@@ -18,7 +14,15 @@
   "errors": [],
   "warnings": [],
   "notes": [
+    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "aflac-enterprise-connect-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
     "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "aflac-claims-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "aflac-eligibility-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "aflac-enrollment-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "aflac-groups-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "aflac-policies-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

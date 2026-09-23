@@ -1,7 +1,9 @@
 ---
 title: Aflac Breach Highlights Need for Proactive Cybersecurity ...
 url: https://www.linkedin.com/posts/dcass001_aflac-data-breach-affects-2265-million-activity-7416841698208555008-obqx
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"Aflac" press release artificial intelligence'
 position: 5
 source: serpapi-google

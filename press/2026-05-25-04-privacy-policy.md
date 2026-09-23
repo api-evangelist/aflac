@@ -1,7 +1,9 @@
 ---
 title: Privacy Policy
 url: https://www.aflac.com/about-aflac/privacy-policy.aspx
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"Aflac" press release artificial intelligence'
 position: 4
 source: serpapi-google

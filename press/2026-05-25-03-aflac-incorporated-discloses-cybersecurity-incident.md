@@ -1,7 +1,9 @@
 ---
 title: Aflac Incorporated Discloses Cybersecurity Incident
 url: https://www.prnewswire.com/news-releases/aflac-incorporated-discloses-cybersecurity-incident-302487036.html
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"Aflac" press release artificial intelligence'
 position: 3
 source: serpapi-google
