@@ -267,21 +267,6 @@ components:
           type: string
           description: Unique request ID for support reference.
           example: req-a1b2c3d4e5
-    ClaimList:
-      type: object
-      description: Paginated list of claims.
-      properties:
-        items:
-          type: array
-          description: Array of claim records.
-          items:
-            $ref: '#/components/schemas/Claim'
-          example:
-          - example_value
-        total:
-          type: integer
-          description: Total number of matching claims.
-          example: 30
     ClaimRequest:
       type: object
       description: Request payload for submitting a new claim.
@@ -313,6 +298,21 @@ components:
           type: string
           description: Description of the incident or diagnosis.
           example: Employee sustained a broken arm in a workplace accident.
+    ClaimList:
+      type: object
+      description: Paginated list of claims.
+      properties:
+        items:
+          type: array
+          description: Array of claim records.
+          items:
+            $ref: '#/components/schemas/Claim'
+          example:
+          - example_value
+        total:
+          type: integer
+          description: Total number of matching claims.
+          example: 30
   securitySchemes:
     oauth2:
       type: oauth2

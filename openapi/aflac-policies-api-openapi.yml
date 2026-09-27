@@ -138,6 +138,22 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    Error:
+      type: object
+      description: API error response.
+      properties:
+        error:
+          type: string
+          description: Error code.
+          example: not_found
+        message:
+          type: string
+          description: Human-readable error description.
+          example: The requested resource was not found.
+        request_id:
+          type: string
+          description: Unique request ID for support reference.
+          example: req-a1b2c3d4e5
     Policy:
       type: object
       description: A supplemental insurance policy record.
@@ -183,22 +199,6 @@ components:
           format: date
           description: Policy effective date.
           example: '2025-01-01'
-    Error:
-      type: object
-      description: API error response.
-      properties:
-        error:
-          type: string
-          description: Error code.
-          example: not_found
-        message:
-          type: string
-          description: Human-readable error description.
-          example: The requested resource was not found.
-        request_id:
-          type: string
-          description: Unique request ID for support reference.
-          example: req-a1b2c3d4e5
     PolicyList:
       type: object
       description: Paginated list of policies.
