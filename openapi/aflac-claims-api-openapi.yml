@@ -197,21 +197,6 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    ClaimList:
-      type: object
-      description: Paginated list of claims.
-      properties:
-        items:
-          type: array
-          description: Array of claim records.
-          items:
-            $ref: '#/components/schemas/Claim'
-          example:
-          - example_value
-        total:
-          type: integer
-          description: Total number of matching claims.
-          example: 30
     Error:
       type: object
       description: API error response.
@@ -259,6 +244,21 @@ components:
           type: string
           description: Description of the incident or diagnosis.
           example: Employee sustained a broken arm in a workplace accident.
+    ClaimList:
+      type: object
+      description: Paginated list of claims.
+      properties:
+        items:
+          type: array
+          description: Array of claim records.
+          items:
+            $ref: '#/components/schemas/Claim'
+          example:
+          - example_value
+        total:
+          type: integer
+          description: Total number of matching claims.
+          example: 30
     Claim:
       type: object
       description: A supplemental insurance claim record.
