@@ -137,6 +137,8 @@ apis:
   - type: GettingStarted
     url: https://docs.enterprise-connect.aflac.com/docs/onboarding
 common:
+  - type: FinOps
+    url: finops/aflac-finops.yml
   - type: AgenticAccess
     url: agentic-access/aflac-agentic-access.yml
   - type: DomainSecurity
