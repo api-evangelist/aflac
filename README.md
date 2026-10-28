@@ -1,4 +1,4 @@
-# aflac (aflac)
+# Aflac
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,118 +64,211 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Aflac is America's leading provider of supplemental insurance, offering products that pay benefits when a policyholder experiences an accident, illness, or injury. Aflac provides REST APIs through its Enterprise Connect (AEC) platform enabling benefits technology companies, HR platforms, and benefits administrators to integrate supplemental insurance enrollment, policy management, and claims capabilities into their workflows.
+Aflac is America's leading provider of supplemental insurance, paying benefits when a policyholder has an accident, illness, or injury. Aflac runs its own integration-API platform, Aflac Enterprise Connect (AEC), on AWS API Gateway in front of Java and .NET services, and publishes the platform's design rules openly at docs.enterprise-connect.aflac.com: a layered service taxonomy (experience, process, core, system, aspect), a strict resource-path grammar, a mandated general-response envelope, a mandatory health endpoint on every API, and a complete enterprise canonical data model (EDS v2020, roughly 90 canonicals across 20 libraries). The portal is written for Aflac application teams, not outside partners: the service catalog, Swagger console and spec builder sit behind a PingIdentity login, OAuth 2.0 client-credentials is the only supported authentication, and credentials are issued by internal request. The design documentation is public; the contracts and endpoints are not.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/aflac/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/aflac/refs/heads/main/apis.yml)
+**Areas:** Fortune 500 · Insurance · Supplemental Insurance · Employee Benefits · Claims · Enrollment · Policy Administration · Enterprise Integration
 
-## Timestamps
+## Aflac on APIs.io
 
-- **Modified:** 2026-04-19
+Everything profiled for Aflac is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/aflac/](https://apis.io/providers/aflac/)** — or go straight to one of the APIs or properties below.
 
-## APIs
+### APIs (6)
 
-### Aflac Enterprise Connect API
+- [Aflac Claims API](https://apis.io/apis/aflac/claims-api/) — The Aflac Claims API provides programmatic access to supplemental insurance claim submission, status retrieval, and benefit payment tracking. It enables…
+- [aflac Claims API](https://apis.io/apis/aflac/aflac-claims-api/) — Claims submission and status retrieval operations.
+- [aflac Eligibility API](https://apis.io/apis/aflac/aflac-eligibility-api/) — Employee eligibility verification operations.
+- [aflac Enrollment API](https://apis.io/apis/aflac/aflac-enrollment-api/) — Benefits enrollment operations for supplemental insurance products.
+- [aflac Groups API](https://apis.io/apis/aflac/aflac-groups-api/) — Employer group management operations.
+- [aflac Policies API](https://apis.io/apis/aflac/aflac-policies-api/) — Policy management and retrieval operations.
 
-The Aflac Enterprise Connect (AEC) API enables benefits administrators, HR platforms, and third-party enrollment systems to integrate with Aflac's supplemental insurance platform programmatically. It provides REST API access to benefits enrollment, policy management, claims status, and eligibility verification for group and individual supplemental insurance products. The API supports electronic benefits enrollment workflows replacing traditional EDI 834 file exchanges, enabling real-time enrollment confirmation and policy administration for employers and their benefits technology partners.
+### Published properties
 
-- **Human URL:** [https://docs.enterprise-connect.aflac.com](https://docs.enterprise-connect.aflac.com)
-- **Base URL:** `https://api.enterprise-connect.aflac.com`
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-#### Tags
+#### Agentic access (1)
 
-- Benefits
-- Enrollment
-- Insurance
-- Supplemental Insurance
-- Workforce
+Which operations an agent can call, which act, and which need a human in the loop.
 
-#### Properties
+- [Aflac Agentic Access](https://apis.io/agentic-access/aflac/aflac-agentic-access/)
 
-- [Documentation](https://docs.enterprise-connect.aflac.com)
-- [Getting Started](https://docs.enterprise-connect.aflac.com/docs/getting-started)
-- [OpenAPI](openapi/aflac-enterprise-connect-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/aflac-enterprise-connect.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/aflac-enterprise-connect.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### JSON Schema (13)
 
-### Aflac Claims API
+The data models the API reads and writes.
 
-The Aflac Claims API provides programmatic access to supplemental insurance claim submission, status retrieval, and benefit payment tracking. It enables policyholders and administrators to submit claims digitally, track claim processing status, and receive benefit payment notifications. The API supports claims for Aflac's portfolio of supplemental products including accident, critical illness, cancer, hospital indemnity, and short-term disability insurance.
+- [Claim](https://apis.io/schemas/aflac/enterprise-connect-claim/)
+- [ClaimList](https://apis.io/schemas/aflac/enterprise-connect-claim-list/)
+- [ClaimRequest](https://apis.io/schemas/aflac/enterprise-connect-claim-request/)
+- [Dependent](https://apis.io/schemas/aflac/enterprise-connect-dependent/)
+- [EligibilityRequest](https://apis.io/schemas/aflac/enterprise-connect-eligibility-request/)
+- [EligibilityResponse](https://apis.io/schemas/aflac/enterprise-connect-eligibility-response/)
+- [Enrollment](https://apis.io/schemas/aflac/enterprise-connect-enrollment/)
+- [EnrollmentList](https://apis.io/schemas/aflac/enterprise-connect-enrollment-list/)
+- [EnrollmentRequest](https://apis.io/schemas/aflac/enterprise-connect-enrollment-request/)
+- [Group](https://apis.io/schemas/aflac/enterprise-connect-group/)
+- [GroupList](https://apis.io/schemas/aflac/enterprise-connect-group-list/)
+- [Policy](https://apis.io/schemas/aflac/enterprise-connect-policy/)
+- [PolicyList](https://apis.io/schemas/aflac/enterprise-connect-policy-list/)
 
-- **Human URL:** [https://docs.enterprise-connect.aflac.com](https://docs.enterprise-connect.aflac.com)
-- **Base URL:** `https://api.enterprise-connect.aflac.com`
+#### JSON Structure (13)
 
-#### Tags
+Data models expressed in JSON Structure.
 
-- Claims
-- Insurance
-- Payments
-- Supplemental Insurance
+- [Enterprise Connect Claim List Structure](https://apis.io/json-structure/aflac/enterprise-connect-claim-list-structure/)
+- [Enterprise Connect Claim Request Structure](https://apis.io/json-structure/aflac/enterprise-connect-claim-request-structure/)
+- [Enterprise Connect Claim Structure](https://apis.io/json-structure/aflac/enterprise-connect-claim-structure/)
+- [Enterprise Connect Dependent Structure](https://apis.io/json-structure/aflac/enterprise-connect-dependent-structure/)
+- [Enterprise Connect Eligibility Request Structure](https://apis.io/json-structure/aflac/enterprise-connect-eligibility-request-structure/)
+- [Enterprise Connect Eligibility Response Structure](https://apis.io/json-structure/aflac/enterprise-connect-eligibility-response-structure/)
+- [Enterprise Connect Enrollment List Structure](https://apis.io/json-structure/aflac/enterprise-connect-enrollment-list-structure/)
+- [Enterprise Connect Enrollment Request Structure](https://apis.io/json-structure/aflac/enterprise-connect-enrollment-request-structure/)
+- [Enterprise Connect Enrollment Structure](https://apis.io/json-structure/aflac/enterprise-connect-enrollment-structure/)
+- [Enterprise Connect Group List Structure](https://apis.io/json-structure/aflac/enterprise-connect-group-list-structure/)
+- [Enterprise Connect Group Structure](https://apis.io/json-structure/aflac/enterprise-connect-group-structure/)
+- [Enterprise Connect Policy List Structure](https://apis.io/json-structure/aflac/enterprise-connect-policy-list-structure/)
+- [Enterprise Connect Policy Structure](https://apis.io/json-structure/aflac/enterprise-connect-policy-structure/)
 
-#### Properties
+#### JSON-LD (1)
 
-- [Documentation](https://docs.enterprise-connect.aflac.com)
-- [Postman Collection](collections/aflac-enterprise-connect.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/aflac-enterprise-connect.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Linked-data contexts for the provider's vocabulary.
 
-## Common Properties
+- [Aflac Enterprise Context](https://apis.io/jsonld/aflac/aflac-enterprise-context/)
 
-- [GitHub Organization](https://github.com/Aflac-SCM)
-- [LinkedIn](https://www.linkedin.com/company/aflac)
-- [Portal](https://docs.enterprise-connect.aflac.com)
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [Aflac Vocabulary](https://apis.io/vocabularies/aflac/aflac-vocabulary/)
+
+#### Examples (13)
+
+Example requests and responses.
+
+- [Enterprise Connect Claim Example](https://apis.io/examples/aflac/enterprise-connect-claim-example/)
+- [Enterprise Connect Claim List Example](https://apis.io/examples/aflac/enterprise-connect-claim-list-example/)
+- [Enterprise Connect Claim Request Example](https://apis.io/examples/aflac/enterprise-connect-claim-request-example/)
+- [Enterprise Connect Dependent Example](https://apis.io/examples/aflac/enterprise-connect-dependent-example/)
+- [Enterprise Connect Eligibility Request Example](https://apis.io/examples/aflac/enterprise-connect-eligibility-request-example/)
+- [Enterprise Connect Eligibility Response Example](https://apis.io/examples/aflac/enterprise-connect-eligibility-response-example/)
+- [Enterprise Connect Enrollment Example](https://apis.io/examples/aflac/enterprise-connect-enrollment-example/)
+- [Enterprise Connect Enrollment List Example](https://apis.io/examples/aflac/enterprise-connect-enrollment-list-example/)
+- [Enterprise Connect Enrollment Request Example](https://apis.io/examples/aflac/enterprise-connect-enrollment-request-example/)
+- [Enterprise Connect Group Example](https://apis.io/examples/aflac/enterprise-connect-group-example/)
+- [Enterprise Connect Group List Example](https://apis.io/examples/aflac/enterprise-connect-group-list-example/)
+- [Enterprise Connect Policy Example](https://apis.io/examples/aflac/enterprise-connect-policy-example/)
+- [Enterprise Connect Policy List Example](https://apis.io/examples/aflac/enterprise-connect-policy-list-example/)
+
+#### Collections (6)
+
+Postman and Open Collection request collections.
+
+- [Aflac Enterprise Connect Claims API](https://apis.io/collections/aflac/open-aflac-claims-api/)
+- [Aflac Enterprise Connect Claims Eligibility API](https://apis.io/collections/aflac/open-aflac-eligibility-api/)
+- [Aflac Enterprise Connect Claims Enrollment API](https://apis.io/collections/aflac/open-aflac-enrollment-api/)
+- [Aflac Enterprise Connect API](https://apis.io/collections/aflac/open-aflac-enterprise-connect/)
+- [Aflac Enterprise Connect Claims Groups API](https://apis.io/collections/aflac/open-aflac-groups-api/)
+- [Aflac Enterprise Connect Claims Policies API](https://apis.io/collections/aflac/open-aflac-policies-api/)
+
+#### Governance rules (2)
+
+Spectral rulesets for the provider's contracts.
+
+- [Aflac — jsonschema rules](https://apis.io/rules/aflac/aflac-jsonschema-spectral-rules/)
+- [Aflac API Rules](https://apis.io/rules/aflac/aflac-spectral-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Aflac Authentication](https://apis.io/security/aflac/aflac-authentication/)
+- [Aflac Domain Security](https://apis.io/security/aflac/aflac-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Aflac Scopes](https://apis.io/scopes/aflac/aflac-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Aflac Plans Pricing](https://apis.io/plans/aflac/aflac-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Aflac Rate Limits](https://apis.io/rate-limits/aflac/aflac-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Aflac Finops](https://apis.io/finops/aflac/aflac-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://www.aflac.com)
-- [Sign Up](https://www.aflac.com/business/default.aspx)
-- [Terms of Service](https://www.aflac.com/about-aflac/legal/terms-and-conditions.aspx)
-- [Privacy Policy](https://www.aflac.com/about-aflac/legal/privacy-policy.aspx)
+- [Documentation](https://docs.enterprise-connect.aflac.com/docs/index)
+- [Getting started](https://docs.enterprise-connect.aflac.com/docs/onboarding)
+- [API reference](https://docs.enterprise-connect.aflac.com/docs/developer-guide/app-team-controls/openapi-specification)
 - [Support](https://www.aflac.com/contact-aflac/default.aspx)
-- [Features](undefined)
-- [Use Cases](undefined)
-- [Integrations](undefined)
-- [OpenAPI](openapi/aflac-enterprise-connect-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [JSON Schema](json-schema/enterprise-connect-claim-list-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/enterprise-connect-claim-request-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/enterprise-connect-claim-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/enterprise-connect-dependent-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/enterprise-connect-eligibility-request-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/enterprise-connect-eligibility-response-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/enterprise-connect-enrollment-list-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/enterprise-connect-enrollment-request-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/enterprise-connect-enrollment-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/enterprise-connect-group-list-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/enterprise-connect-group-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/enterprise-connect-policy-list-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/enterprise-connect-policy-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Structure](json-structure/enterprise-connect-claim-list-structure.json)
-- [JSON Structure](json-structure/enterprise-connect-claim-request-structure.json)
-- [JSON Structure](json-structure/enterprise-connect-claim-structure.json)
-- [JSON Structure](json-structure/enterprise-connect-dependent-structure.json)
-- [JSON Structure](json-structure/enterprise-connect-eligibility-request-structure.json)
-- [JSON Structure](json-structure/enterprise-connect-eligibility-response-structure.json)
-- [JSON Structure](json-structure/enterprise-connect-enrollment-list-structure.json)
-- [JSON Structure](json-structure/enterprise-connect-enrollment-request-structure.json)
-- [JSON Structure](json-structure/enterprise-connect-enrollment-structure.json)
-- [JSON Structure](json-structure/enterprise-connect-group-list-structure.json)
-- [JSON Structure](json-structure/enterprise-connect-group-structure.json)
-- [JSON Structure](json-structure/enterprise-connect-policy-list-structure.json)
-- [JSON Structure](json-structure/enterprise-connect-policy-structure.json)
-- [JSON-LD](json-ld/aflac-enterprise-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-- [Example](examples/enterprise-connect-claim-example.json)
-- [Example](examples/enterprise-connect-claim-list-example.json)
-- [Example](examples/enterprise-connect-claim-request-example.json)
-- [Example](examples/enterprise-connect-dependent-example.json)
-- [Example](examples/enterprise-connect-eligibility-request-example.json)
-- [Example](examples/enterprise-connect-eligibility-response-example.json)
-- [Example](examples/enterprise-connect-enrollment-example.json)
-- [Example](examples/enterprise-connect-enrollment-list-example.json)
-- [Example](examples/enterprise-connect-enrollment-request-example.json)
-- [Example](examples/enterprise-connect-group-example.json)
-- [Example](examples/enterprise-connect-group-list-example.json)
-- [Example](examples/enterprise-connect-policy-example.json)
-- [Example](examples/enterprise-connect-policy-list-example.json)
-- [Spectral Rules](rules/aflac-spectral-rules.yml)
-- [Vocabulary](vocabulary/aflac-vocabulary.yaml)
-- [L L Ms Txt](https://docs.enterprise-connect.aflac.com/llms.txt)
+- [Blog](https://newsroom.aflac.com/)
+- [Terms of service](https://www.aflac.com/about-aflac/legal/terms-and-conditions.aspx)
+- [Privacy policy](https://www.aflac.com/about-aflac/legal/privacy-policy.aspx)
+- [GitHub](https://github.com/Aflac-SCM)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** info@apievangelist.com
+**Kin Score 36.8** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 78.6 |
+| Contract quality | 27.8 |
+| Contract governance | 45.5 |
+| Operational transparency | 34.2 |
+| Developer ergonomics | 35.7 |
+| Access clarity | 18.4 |
+
+**Agent readiness 36.3** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | negotiable (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 29.8** — Insurance
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/aflac/](https://apis.io/providers/aflac/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Aflac: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/aflac/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
