@@ -1,0 +1,100 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: aflac
+providerId: aflac
+created: '2026-05-04'
+# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
+# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
+method: generated
+modified: '2026-05-05'
+reconciled: false
+plan_count: 2
+docs_checked: >-
+  Re-checked 2026-09-04 against the Aflac Enterprise Connect developer portal
+  (https://docs.enterprise-connect.aflac.com, 7,160 indexed content sections): the portal carries a
+  "Cost Management" architecture page about AWS spend, but publishes NO API pricing, no tiers, no
+  quotas priced per call, and no commercial terms of any kind. AEC is an internal platform, so
+  there is nothing for an outside buyer to price. The two entries below remain the honest reading:
+  integration terms are set by partner contract, and consumer premiums are state-filed.
+notes: Aflac is a supplemental insurance carrier. It does not publish a public developer API or
+  per-call pricing; broker/employer integrations and consumer policies are sold through licensed
+  channels with state-filed rates.
+tags:
+  - Insurance
+  - Supplemental Insurance
+  - Health
+  - Voluntary Benefits
+description: Aflac does not expose a publicly priced developer API. Insurance products are
+  underwritten and sold through licensed agents, with premiums filed with state insurance
+  regulators rather than published as per-call pricing.
+sources:
+  - https://www.aflac.com/
+plans:
+  - id: aflac-broker-integration
+    name: Broker / Employer Integration
+    type: enterprise
+    description: Custom enrollment and claims integration for brokers and employers; pricing
+      governed by partner agreement.
+    entries:
+      - label: Partner contract
+        name: custom
+        type: subscription
+        metric: contract
+        limit: -1
+        timeFrame: month
+        geo: US
+        unit: 1
+        price: contact sales
+        userMultiplied: false
+    elements:
+      - name: Enrollment integration
+      - name: Claims integration
+      - name: Group benefits administration
+  - id: aflac-policy-premiums
+    name: Policy Premiums
+    type: subscription
+    description: Consumer policy premiums set per product/state filing; quoted to the policyholder
+      based on age, coverage, and state.
+    entries:
+      - label: Premium
+        name: premium
+        type: subscription
+        metric: month
+        limit: -1
+        timeFrame: month
+        geo: US
+        unit: 1
+        price: state-filed; quoted per policy
+        userMultiplied: false
+    elements:
+      - name: Accident
+      - name: Cancer / Critical Illness
+      - name: Hospital Indemnity
+      - name: Short-term Disability
+      - name: Dental and Vision
+x-canonical:
+  generated: '2026-11-01'
+  vocabulary: engine/economics/plans-canonical.yml
+  models:
+  - subscription
+  units:
+  - negotiated
+  - period
+  plans:
+  - name: Broker / Employer Integration
+    access: enterprise
+    model: subscription
+    model_how: derived
+    units:
+    - negotiated
+    periods:
+    - month
+  - name: Policy Premiums
+    access: other
+    model: subscription
+    model_how: stated
+    units:
+    - period
+    periods:
+    - month
